@@ -32,8 +32,6 @@ app.use(express.static('public'));
 app.use((req,res,next)=>{
     const userId=req.session?.user?.id;
     const role = req.session?.user?.role;
-    if(!userId && req.path==='/user') {return res.redirect('/user/signin')};
-    if (role !=='admin' && req.path==='/admin') {return res.redirect('/')};
     return(next());
 })
 
@@ -51,7 +49,7 @@ app.use('/film', filmRouter);
 app.use('/admin',adminRouter);
 
 app.get('/',(req,res)=>{
-    res.render('index');
+    
 })
 
 app.listen(6970,()=>{

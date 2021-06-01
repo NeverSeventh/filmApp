@@ -11,9 +11,9 @@ router.get('/all',async (req,res)=>{
         filmsList.forEach(el => {
             el.filmLink =  el.title.split(' ').join('_');
         });
-         res.send(filmsList).status(200);
+         res.json(filmsList).status(200);
     } catch (error) {
-        
+        res.json(error.message)
     }
      
 
@@ -32,7 +32,7 @@ router.post('/add', async(req,res)=>{
             const film = await Film.findFilmByTitle(filmName);
             if (user && film) {
                 await Favourite.addFavourite(user.id,film.id);
-                return res.redirect('/user')
+                return res.status(200)
             }
         }
        
@@ -40,7 +40,7 @@ router.post('/add', async(req,res)=>{
         throw new Error();
     }
     catch(e) {
-        res.redirect('/film/all');
+        res.json(e.message).status(501);
     }
 })
 
@@ -51,20 +51,16 @@ router.get('/:title', async(req,res)=>{
          const film = await Film.findFilmByTitle(normalTitle);
 
         if (film) {
-            let page = req.query.page;
-            if(!page) {
-                page=1;
-            }
             const comments = await Comment.findAllCommentsByFilm(film.id);
             const count = await Comment.countComments(film.id);
  
-            return res.render('film',{film,comments,pagination})
+            return res.json({film,comments})
 
         }
         throw new Error('No film found');
 
     }catch(e) {
-        res.redirect('/film/all');
+        res.json(e.message);
     }
 })
 
@@ -92,12 +88,12 @@ router.post('/:title',async (req,res)=>{
                 
             
         } catch (e) {
-            
+            res.json(e.message)
         }
     }
     if (userId&&film&&commentText) {
         comment = await Comment.addComment(userId,film.id,commentText);
-        res.send(comment).status(200);
+        res.json(comment).status(200);
     }
     
 })

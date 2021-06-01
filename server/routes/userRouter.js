@@ -22,9 +22,9 @@ router.get('/', async (req,res)=>{
             }
             
         });
-        res.render('user',{user, favFilms});
+        res.json({user, favFilms});
     } catch (error) {
-        
+        res.json(error.message)
     }
 
     
@@ -46,7 +46,7 @@ router.post('/signup',async(req,res)=>{
                     id:newUser.id,
                     role:newUser.role
                 };
-                return res.status(200).redirect('/user')
+                return res.status(200)
             }else {
                 throw new Error('cannot create user');
             }
@@ -55,12 +55,12 @@ router.post('/signup',async(req,res)=>{
         }
     }
     catch(e) {
-        res.render('signup',{e});
+        res.json(e.message);
     }
 })
 
 router.get('/signin',(req,res)=>{
-    res.render('signin');
+ 
 })
 
 router.post('/signin',async(req,res)=>{
@@ -71,20 +71,20 @@ router.post('/signin',async(req,res)=>{
                 id:user.id,
                 role:user.role
             }
-            return res.status(200).redirect('/user');
+            return res.status(200);
         }
         throw new Error('wrong password or email');
     }
     catch (e) {
-        res.render('signin',{e});
+        res.json(e.message);
     }
 })
 
 router.get('/logout',async (req,res)=>{
     req.session.destroy((err)=>{
-        if (err) return res.redirect('/')
+        if (err) return res.status(401)
         res.clearCookie(res.app.get('cookieName'));
-        return res.redirect('/');
+        return res.status(200);
     })
 })
 
