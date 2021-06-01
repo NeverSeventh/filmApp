@@ -1,0 +1,55 @@
+<h2>{{film.title}}</h2>
+{{#if film.description}}
+    <p>{{film.description}}</p>
+{{/if}}
+
+{{#if id}}
+<fieldset class="star-rating">
+  <legend class="star-rating__title">Your rating:</legend>
+  <div class="star-rating__stars">
+    <input class="star-rating__input" type="radio"  name="rating" value="1" id="rating-1" />
+    <label class="star-rating__label" for="rating-1" aria-label="One"></label>
+    <input class="star-rating__input" type="radio" name="rating" value="2" id="rating-2" />
+    <label class="star-rating__label" for="rating-2" aria-label="Two"></label>
+    <input class="star-rating__input" type="radio" name="rating" value="3" id="rating-3" />
+    <label class="star-rating__label" for="rating-3"  aria-label="Three"></label>
+    <input class="star-rating__input" type="radio"  name="rating" value="4" id="rating-4" />
+    <label class="star-rating__label" for="rating-4" aria-label="Four"></label>
+    <input class="star-rating__input" type="radio"  name="rating" value="5" id="rating-5" />
+    <label class="star-rating__label" for="rating-5"  aria-label="Five"></label>
+    <div class="star-rating__focus"></div>
+  </div>
+</fieldset>
+
+
+<form action="/film/add" method="POST">
+<button id="addButton" type="submit" name="film"  value='{{film.title}}'>Добавить в любимые</button>
+</form>
+{{/if}}
+
+{{#if admin}}
+    <a href="/admin/editfilm/{{film.id}}">Редактировать</a>
+{{/if}}
+
+{{#if id}}
+  <form id="addComment" method="post">
+    <input type="text" name="commentText" id="comment_text">
+    <button type="submit">Комментировать</button>
+  </form>
+{{/if}}
+
+<div class="comments">
+{{#each comments}}
+<div class="comment" id="c_{{this.id}}">
+  <div>Автор:{{this.nickname}}</div>
+  <div>{{this.text}}</div>
+</div>  
+
+{{/each}}
+</div>
+
+<div id="pagination" class="pagination__container">
+{{#paginate pagination type="middle" limit="7"}}
+  <li {{#if active}}class="active"{{/if}}><a href="?p={{n}}">{{n}}</a></li>
+{{/paginate}}
+</div>

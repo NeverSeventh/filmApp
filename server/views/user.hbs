@@ -1,0 +1,9 @@
+<h1>this is you {{user.nickname}}</h1>
+
+<h2>Films collection</h2>
+
+<ul>
+    {{#each favFilms}}
+    <li><a href="/film/{{this.filmsLink}}">{{this.title}}</a></li>
+    {{/each}}
+</ul>
