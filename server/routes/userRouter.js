@@ -32,7 +32,7 @@ router.get('/', async (req,res)=>{
 })
 
 router.get('/signup',(req,res)=>{
-    res.render('signup');
+  
 })
 
 router.post('/signup',async(req,res)=>{
@@ -65,13 +65,16 @@ router.get('/signin',(req,res)=>{
 
 router.post('/signin',async(req,res)=>{
     try{
+
         const user = await User.logIn(req.body.email,req.body.password);
         if(user?.password === req.body.password) {
             req.session.user = {
                 id:user.id,
                 role:user.role
             }
-            return res.status(200);
+            
+            return res.status(200).send({message:'login succesful'});
+            
         }
         throw new Error('wrong password or email');
     }
@@ -84,7 +87,7 @@ router.get('/logout',async (req,res)=>{
     req.session.destroy((err)=>{
         if (err) return res.status(401)
         res.clearCookie(res.app.get('cookieName'));
-        return res.status(200);
+        return res.status(200).send({message:"logout succesful"});
     })
 })
 

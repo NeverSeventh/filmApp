@@ -5,6 +5,8 @@ const User = require('../models/user.model.js');
 const Favourite = require('../models/favourite.model.js');
 const Rating = require('../models/rating.model.js');
 const Comment = require('../models/comment.model.js');
+
+
 router.get('/all',async (req,res)=>{
     try {
         let filmsList =await Film.getAllFilms();
@@ -13,7 +15,7 @@ router.get('/all',async (req,res)=>{
         });
          res.json(filmsList).status(200);
     } catch (error) {
-        res.json(error.message)
+        res.json(error.message).status(404);
     }
      
 

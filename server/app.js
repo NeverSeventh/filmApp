@@ -7,9 +7,13 @@ const userRouter = require('./routes/userRouter');
 const filmRouter = require('./routes/filmRouter');
 const adminRouter = require('./routes/adminRouter');
 const FileStore = require('session-file-store')(sessions);
-app.use(express.json());
-app.use(express.urlencoded({extended:true}));
+const cors = require('cors');
 
+
+app.use(cors());
+
+app.use(express.urlencoded({extended:true}));
+app.use(express.json());
 const secretKey = require('crypto').randomBytes(64).toString('hex');
 app.set('cookieName','userSession');
 app.use(sessions({
