@@ -1,6 +1,7 @@
 const LOGIN = "LOGIN";
 const SIGNUP = "SIGNUP";
 const LOGOUT = "LOGOUT";
+const CURRENT_USER = "CURRENT_USER";
 
 const ALL_FILMS = "ALL_FILMS";
 const ADD_TO_FAVOURITES = "ADD_TO_FAVOURITES";
@@ -26,5 +27,6 @@ export {
     ADD_FILM,
     EDIT_FILM,
     DELETE_FILM,
-    CURRENT_FILM 
+    CURRENT_FILM,
+    CURRENT_USER
 }

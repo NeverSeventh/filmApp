@@ -4,14 +4,9 @@ const User = require('../models/user.model.js');
 const Favourite = require('../models/favourite.model.js');
 router.get('/', async (req,res)=>{
     const userId=req.session?.user?.id;
+    console.log(req.session);
+
     
-    // const user = await userModel.findById(userId).populate('favouriteFilms');
-    
-    // user.favouriteFilms.forEach(el => {
-    //     el.filmsLink =  el.title.split(' ').join('_');
-    //     console.log(el.filmsLink);
-        
-    // });
     try {
         const user = await User.findUserById(userId);
 
@@ -22,13 +17,39 @@ router.get('/', async (req,res)=>{
             }
             
         });
-        res.json({user, favFilms});
+        res.json({user, favFilms}).status(200);
     } catch (error) {
-        res.json(error.message)
+        res.json(error.message).status(401);
     }
 
     
     
+})
+
+router.post('/',async(req,res)=> {
+    const {userid} = req.body;
+    try {
+        const getUser = await User.findUserById(userid);
+        const favFilms = await Favourite.getAllFavourites(userid);
+        favFilms.forEach(el => {
+            if (el.title) {
+                el.filmsLink = el.title.split(' ').join('_');
+            }       
+        });
+        if (getUser) {
+            const user = {
+                id:getUser.id,
+                email:getUser.email,
+                nickname:getUser.nickname
+            }
+            return res.json({user,favFilms});
+        }
+        return res.json('user not found')
+    } catch (e) {
+      res.json('user not found')  
+    }
+
+
 })
 
 router.get('/signup',(req,res)=>{
@@ -46,7 +67,8 @@ router.post('/signup',async(req,res)=>{
                     id:newUser.id,
                     role:newUser.role
                 };
-                return res.status(200)
+                
+                return res.status(200).json(newUser.id)
             }else {
                 throw new Error('cannot create user');
             }
@@ -55,7 +77,7 @@ router.post('/signup',async(req,res)=>{
         }
     }
     catch(e) {
-        res.json(e.message);
+        res.json({message:e.message});
     }
 })
 
@@ -65,21 +87,21 @@ router.get('/signin',(req,res)=>{
 
 router.post('/signin',async(req,res)=>{
     try{
-
+        console.log(req.body.email,req.body.password);
         const user = await User.logIn(req.body.email,req.body.password);
         if(user?.password === req.body.password) {
             req.session.user = {
                 id:user.id,
                 role:user.role
             }
-            
-            return res.status(200).send({message:'login succesful'});
+
+            return res.status(200).json(user.id);
             
         }
         throw new Error('wrong password or email');
     }
     catch (e) {
-        res.json(e.message);
+        res.json(e.message).status(404);
     }
 })
 

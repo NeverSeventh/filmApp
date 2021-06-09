@@ -3,7 +3,9 @@
 const initialState = {
     films:[],
     favouriteFilms:[],
-    currentFilm:{}
+    currentFilm:{},
+    currentUser:{},
+    userid:{}
 }
 
 export default initialState;

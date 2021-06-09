@@ -2,6 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router"
 import { fetchCurrentFilm } from "../../redux/AC/films";
+import Comment from "../Comment/Comment";
 
 
 
@@ -16,8 +17,12 @@ const Film = () => {
         dispatch(fetchCurrentFilm(title));
         
     },[])
+
     
     
+    const comments = currentFilm?.comments?.map(el => {
+        return <Comment key={el.id} text={el.text}/>
+    })
 
     return (
         <>
@@ -27,7 +32,7 @@ const Film = () => {
 
 
         <div className="comments">
-            
+            {comments}
         </div>
         </>
     )

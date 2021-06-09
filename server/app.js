@@ -10,7 +10,13 @@ const FileStore = require('session-file-store')(sessions);
 const cors = require('cors');
 
 
-app.use(cors());
+
+
+
+ app.use(cors());
+
+
+
 
 app.use(express.urlencoded({extended:true}));
 app.use(express.json());
@@ -31,7 +37,8 @@ app.use(sessions({
 }));
 
 app.use(logger('dev'));
-app.use(express.static('public'));
+
+
 
 app.use((req,res,next)=>{
     const userId=req.session?.user?.id;
@@ -46,6 +53,14 @@ app.use(async(req,res,next)=>{
     }
     next();
 })
+
+app.use('/',(req, res, next)  => {
+    res.header("Access-Control-Allow-Origin", "http://localhost:3000");
+    res.header("Access-Control-Allow-Headers", "http://localhost:3000");
+    res.header("Access-Control-Allow-Credentials", "true");
+    next();
+});
+
 
 
 app.use('/user', userRouter);
