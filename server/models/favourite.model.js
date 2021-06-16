@@ -3,6 +3,7 @@ const db = getDb.getDb();
 
 class Favourite {
     static async addFavourite(userId,filmId) {
+       
         await db.query('INSERT INTO favourites (user_id,film_id) values (?,?)',[userId,filmId]);
     }
 

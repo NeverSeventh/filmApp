@@ -13,7 +13,9 @@ const User = () => {
         dispatch(fetchCurrentUser(userid));
     },[])
 
-    console.log(user);
+    
+
+    
 
     const filmlist = user?.favFilms?.map(el=>{
         return <li> <NavLink  to={"/film/"+el.filmsLink}>{el.title}</NavLink></li>
@@ -21,6 +23,11 @@ const User = () => {
 
     return(
         <>
+        <div className="user">
+            {user ?
+            <div className="user__name">{user.user?.nickname}</div>
+            :<></>}
+        </div>
         <ul>{filmlist}</ul>
         
         </>

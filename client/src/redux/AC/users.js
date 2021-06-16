@@ -43,8 +43,9 @@ const fetchSignup = (nickname,email,password) => async(dispatch,getState) => {
         headers: {'Content-Type': 'application/json;charset=utf-8'},
         body:JSON.stringify({email:email, password:password,nickname:nickname})
     });
-
+    
     const userid = await responce.json();
+    console.log(userid);
     dispatch(signupActionCreator(userid));
 }
 

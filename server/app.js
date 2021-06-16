@@ -22,19 +22,19 @@ app.use(express.urlencoded({extended:true}));
 app.use(express.json());
 const secretKey = require('crypto').randomBytes(64).toString('hex');
 app.set('cookieName','userSession');
-app.use(sessions({
-    name:app.get('cookieName'),
-    secret:secretKey,
-    resave:false,
-    saveUninitialized:false,
-    store:new FileStore({secret:secretKey}),
-    cookie:{
-        httpOnly:true,
-        maxAge:86400*1e3
-    }
+// app.use(sessions({
+//     name:app.get('cookieName'),
+//     secret:secretKey,
+//     resave:false,
+//     saveUninitialized:false,
+//     store:new FileStore({secret:secretKey}),
+//     cookie:{
+//         httpOnly:true,
+//         maxAge:86400*1e3
+//     }
 
 
-}));
+// }));
 
 app.use(logger('dev'));
 

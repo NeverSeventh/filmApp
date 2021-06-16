@@ -21,7 +21,7 @@ const Signup = () => {
         
     },[]);
 
-    console.log(message);
+   
 
     return(
 

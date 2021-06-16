@@ -5,7 +5,8 @@ const initialState = {
     favouriteFilms:[],
     currentFilm:{},
     currentUser:{},
-    userid:{}
+    userid:undefined,
+    currentRating:undefined
 }
 
 export default initialState;

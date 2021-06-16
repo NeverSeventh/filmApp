@@ -2,6 +2,8 @@ const {Router} = require('express');
 const router = Router();
 const User = require('../models/user.model.js');
 const Favourite = require('../models/favourite.model.js');
+const jwt = require('jsonwebtoken');
+
 router.get('/', async (req,res)=>{
     const userId=req.session?.user?.id;
     console.log(req.session);
@@ -61,12 +63,9 @@ router.post('/signup',async(req,res)=>{
     try {
         if (nickname&&email&&password) {
             const newUser = await User.addUser(email,nickname,password)
-            
+            console.log(newUser);
             if (newUser) {
-                req.session.user= {
-                    id:newUser.id,
-                    role:newUser.role
-                };
+
                 
                 return res.status(200).json(newUser.id)
             }else {
@@ -87,13 +86,9 @@ router.get('/signin',(req,res)=>{
 
 router.post('/signin',async(req,res)=>{
     try{
-        console.log(req.body.email,req.body.password);
+        
         const user = await User.logIn(req.body.email,req.body.password);
         if(user?.password === req.body.password) {
-            req.session.user = {
-                id:user.id,
-                role:user.role
-            }
 
             return res.status(200).json(user.id);
             

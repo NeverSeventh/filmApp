@@ -25,16 +25,17 @@ router.get('/all',async (req,res)=>{
 router.post('/add', async(req,res)=>{
 
     try {
-        const userId = req.session?.user?.id;
+        const userId = req.body.userid;
 
         const filmName = req.body.film;
 
+        console.log(filmName,userId);
         if(filmName && userId) {
             const user = await User.findUserById(userId);
             const film = await Film.findFilmByTitle(filmName);
             if (user && film) {
                 await Favourite.addFavourite(user.id,film.id);
-                return res.status(200)
+                return res.status(200).json({message:'film added'})
             }
         }
        
@@ -54,7 +55,7 @@ router.get('/:title', async(req,res)=>{
 
         if (film) {
             const comments = await Comment.findAllCommentsByFilm(film.id);
-            const count = await Comment.countComments(film.id);
+            
  
             return res.json({film,comments})
 
@@ -68,8 +69,8 @@ router.get('/:title', async(req,res)=>{
 
 router.post('/:title',async (req,res)=>{
     const rating = parseInt(req.body.rating);
-    let title = req.params.title
-    const userId = req.session?.user?.id;
+    let title = req.body.title
+    const userId = req.body.userid;
     const commentText = req.body.commentText;
     const normalTitle = title.split('_').join(' ');
     const film = await Film.findFilmByTitle(normalTitle);
@@ -94,11 +95,31 @@ router.post('/:title',async (req,res)=>{
         }
     }
     if (userId&&film&&commentText) {
-        comment = await Comment.addComment(userId,film.id,commentText);
-        res.json(comment).status(200);
+        try {
+            comment = await Comment.addComment(userId,film.id,commentText);
+            return res.json(comment).status(200);
+        } catch (e) {
+            res.status(501)
+        }
+
     }
     
 })
 
+router.post('/:title/rating', async(req,res) => {
+    let title = req.body.title;
+    const normalTitle = title.split('_').join(' ');
+    const film = await Film.findFilmByTitle(normalTitle);
+    const userid = req.body.userid;
+    if (film,userid) {
+        try {
+            const rating = await Rating.findFilmRating(film.id,userid);
+            return res.json(rating)
+            
+        } catch (e) {
+            res.json(e.message).status(501)
+        }
+    }
+})
 
 module.exports = router;

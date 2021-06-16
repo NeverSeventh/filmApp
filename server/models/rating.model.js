@@ -21,6 +21,15 @@ class Rating {
         const ratings = await db.query('select * from ratings left join films on film_id = films.id where film_id=? ',[filmId]);
         return ratings;
     }
+    
+    static async findFilmRating(filmid,userid) {
+        const rating = await db.query('select rating from ratings left join films on film_id = films.id left join users on user_id = users.id where film_id=? and user_id = ?',[filmid,userid])
+        if (rating) {
+            return rating[0].rating;
+        }else {
+            return 0;
+        }
+    }
  
 }
 
