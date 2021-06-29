@@ -3,8 +3,8 @@ const db = getDb.getDb();
 
 class Film {
     static async findFilmByTitle (title) {
-        const getFilm = await db.query('SELECT * FROM films where title=?',[title]);
-        const film = getFilm[0];
+        const [film] = await db.query('SELECT * FROM films where title=?',[title]);
+        
         return film;
     } 
 

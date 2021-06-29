@@ -1,6 +1,6 @@
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
-
+import "./navbar.scss"
 
 
 
@@ -8,18 +8,33 @@ const Navbar = () => {
     const userid = useSelector(state=>state.userid)
 
     return(
-        <div className="navbar" style={{display:'flex'}}>
-            <NavLink to="/user">User</NavLink>
-            <NavLink to="/film">film</NavLink>
-            {userid ? <></>          :
-            <>
-                <NavLink to="/login">login</NavLink>
-            <NavLink to="/signup">signup</NavLink>
+        <nav className="navbar">
+            <ul className="navbar__list">
+                <li className="navbar__item">
+                <NavLink to="/user">User</NavLink>
+                </li>
+                <li className="navbar__item">
+                <NavLink to="/film">film</NavLink>
+                </li>
+                {userid ? <></>          :
+                    <>
+                    <li className="navbar__item">
+                        <NavLink to="/login">login</NavLink>
+                    </li>
+                    
+                    <li className="navbar__item">
+                    <NavLink to="/signup">signup</NavLink>
+                    </li>
+                   
             </>
             
              }
+            </ul>
+            
+           
 
-        </div>
+
+        </nav>
     )
 }
 

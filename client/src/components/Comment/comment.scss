@@ -1,0 +1,16 @@
+.comment {
+  margin-top: 15px;
+  border: 1px solid #000;
+  width: 800px;
+
+  &__nickname {
+    padding: 15px 0 15px 5px;
+    border-bottom: 1px solid #000;
+    font-size: 16px;
+  }
+
+  &__text {
+    padding: 15px;
+    font-size: 24px;
+  }
+}

@@ -5,13 +5,10 @@ class User {
 
     static async findUserById(id) {
         
-            const getUser = await db.query('SELECT * FROM users WHERE id=?',[id]);
-            if(getUser.length ===1) {
-                const user = getUser[0];
-                return user;
-            }
-            return undefined;
-       
+            const [user] = await db.query('SELECT * FROM users WHERE id=?',[id]);
+
+            return user;
+
         
     }
 
@@ -22,8 +19,8 @@ class User {
     }
 
     static async logIn(email,password) {
-        const getUser = await db.query('SELECT * FROM users WHERE email=? and password=?',[email,password]);
-        const user = getUser[0];
+        const [user] = await db.query('SELECT * FROM users WHERE email=? and password=?',[email,password]);
+        
         return user;
     }
 }

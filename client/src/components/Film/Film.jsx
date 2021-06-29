@@ -5,8 +5,7 @@ import { fetchAddToFavourites, fetchCurrentFilm,fetchFilmRatingUser } from "../.
 import Comment from "../Comment/Comment";
 import Rating from '../Rating/Rating'
 import CommentForm from "../CommentForm/CommentForm";
-
-
+import "./film.scss"
 
 const Film = () => {
     let {title} = useParams();
@@ -20,14 +19,15 @@ const Film = () => {
     const dispatch = useDispatch();
 
     const comments = currentFilm?.comments?.map(el => {
-        return <Comment key={el.id} text={el.text}/>
+        return <Comment  comment={el}/>
     })
+    console.log(currentFilm.comments);
+    
 
     useEffect(()=> {
         
         dispatch(fetchCurrentFilm(title));
-        dispatch(fetchFilmRatingUser(title,userid))
-        console.log(currentFilm);
+        //dispatch(fetchFilmRatingUser(title,userid))
   
         
        
@@ -42,9 +42,6 @@ const Film = () => {
     }
     
    
-    if (userid) {
-        
-    }
 
     return (
         <>
@@ -52,7 +49,7 @@ const Film = () => {
         
         <h1>{currentFilm?.film?.title}</h1>
         <p>{currentFilm?.film?.description  }</p>
-        {userid ? <><button onClick={addToFavouritesHandler}>Add to Favourites</button></> :<>nolad</> }
+        {userid ? <><button onClick={addToFavouritesHandler}>Add to Favourites</button></> :<></> }
         {userid ? <Rating title={title} value={currentFilm.currentRating} userid={userid}/> :<></>}
         
         <div className="comments">

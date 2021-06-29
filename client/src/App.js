@@ -5,7 +5,7 @@ import Login from "./components/Login/Login";
 import Navbar from "./components/Navbar/Navbar";
 import Signup from "./components/Signup/Singup";
 import User from "./components/User/User";
-
+import './app.scss';
 
 const App = () =>{
   return (

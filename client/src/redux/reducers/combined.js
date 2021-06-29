@@ -11,6 +11,7 @@ const reducer = (state=[],action) => {
                 films:action.payload
             }
         case CURRENT_FILM:
+            
             return {
                 ...state,
                 currentFilm:action.payload

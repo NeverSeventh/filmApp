@@ -1,0 +1,24 @@
+.filmPreview {
+  margin-left: 25px;
+  margin-top: 25px;
+  border: 1px solid #000;
+  width: 800px;
+
+  &__title {
+    font-size: 32px;
+    margin: 5px;
+  }
+
+  &__body {
+    border-top: 1px solid #000;
+    display: flex;
+  }
+
+  &__img {
+  }
+
+  &__desc {
+    padding: 25px;
+    font-size: 24px;
+  }
+}

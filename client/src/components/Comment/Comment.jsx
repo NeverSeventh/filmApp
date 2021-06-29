@@ -1,10 +1,14 @@
+import "./comment.scss"
 
-
-const Comment = (props) => {
+const Comment = ({comment}) => {
+    
     return(
 
         <div className="comment">
-            <p>{props.text}</p>
+            <div className="comment__nickname">{comment.nickname}</div>
+            <div className="comment__text">
+                <p>{comment.text}</p>
+            </div>
         </div>
     )
 

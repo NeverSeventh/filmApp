@@ -1,0 +1,51 @@
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+}
+
+body,
+h1,
+h2,
+h3,
+h4,
+p,
+li,
+figure,
+figcaption,
+blockquote,
+dl,
+dd {
+  margin: 0;
+  padding: 0;
+}
+
+input,
+button,
+textarea,
+select {
+  font: inherit;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+a {
+  text-decoration: none;
+  color: #33468f;
+}
+
+ul {
+  list-style: none;
+}
+
+body {
+  background-color: #fffbc9;
+}
+
+* {
+  color: #33468f;
+}

@@ -3,13 +3,9 @@ const db = getDb.getDb();
 
 class Comment {
     static async findCommentById(id) {
-        const getComment = await db.query('SELECT comments.text,comments.id,comments.film_id,users.nickname FROM comments left join users on comments.user_id = users.id WHERE comments.id=?',[id]);
+        const [comment] = await db.query('SELECT comments.text,comments.id,comments.film_id,users.nickname FROM comments left join users on comments.user_id = users.id WHERE comments.id=?',[id]);
+        return comment;
 
-        if(getComment.length ===1) {
-            const comment = getComment[0];
-            return comment;
-        }
-        return undefined;
    
     }
 
@@ -20,7 +16,7 @@ class Comment {
     }
 
     static async findAllCommentsByFilm(filmId) {
-        const comments = await db.query('select * from comments  left join users on comments.user_id = users.id where film_id=?',[filmId]);
+        const comments = await db.query('select comments.id,comments.text,users.nickname from comments  left join users on comments.user_id = users.id where film_id=?',[filmId]);
         return comments;
     }
 

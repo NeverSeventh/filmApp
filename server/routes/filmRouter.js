@@ -56,7 +56,7 @@ router.get('/:title', async(req,res)=>{
         if (film) {
             const comments = await Comment.findAllCommentsByFilm(film.id);
             
- 
+            
             return res.json({film,comments})
 
         }
