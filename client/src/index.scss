@@ -43,9 +43,19 @@ ul {
 }
 
 body {
-  background-color: #fffbc9;
+  background-color: #e7e7da;
 }
 
 * {
-  color: #33468f;
+  color: black;
+}
+
+.btn {
+  width: 250px;
+  height: 50px;
+  text-align: center;
+  background-color: #87bae2;
+  font-size: 25px;
+  color: black;
+  font-weight: 800;
 }

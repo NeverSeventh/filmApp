@@ -1,9 +1,13 @@
-import { CURRENT_USER, LOGIN, SIGNUP } from "../types"
+import { CURRENT_USER, IS_ADMIN, LOGIN, SIGNUP } from "../types"
 
 
 
 const loginActionCreator = (payload) => {
     return {type:LOGIN, payload:payload}
+}
+
+const isAdminActionCreator = (payload) => {
+    return {type:IS_ADMIN,payload:payload}
 }
 
 const fetchLogin = (email, password) => async(dispatch,getState) => {
@@ -12,9 +16,14 @@ const fetchLogin = (email, password) => async(dispatch,getState) => {
         headers: {'Content-Type': 'application/json;charset=utf-8'},
         body:JSON.stringify({email:email, password:password})
     });
-    const userid = await responce.json();
     
-    dispatch(loginActionCreator(userid));
+    if (responce.status === 200) {
+        const userInfo = await responce.json();
+        
+        dispatch(loginActionCreator(userInfo.userid));
+        dispatch(isAdminActionCreator(userInfo.isAdmin));
+    }
+
 
 }
 

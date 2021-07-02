@@ -2,20 +2,25 @@ const {Router} = require('express');
 const router = Router();
 const User = require('../models/user.model.js');
 const Favourite = require('../models/favourite.model.js');
-const jwt = require('jsonwebtoken');
+const { USERS } = require('../constants/tables.js');
+const { ID } = require('../constants/columns.js');
+const { spliter } = require('../functions/functions.js');
+const createToken = require('../auth/auth.js');
+const config = require('../auth/config.js');
 
 router.get('/', async (req,res)=>{
     const userId=req.session?.user?.id;
-    console.log(req.session);
+
 
     
     try {
-        const user = await User.findUserById(userId);
+        const user = await User.query(USERS,ID,userId);
 
         const favFilms = await Favourite.getAllFavourites(userId);
+        
         favFilms.forEach(el => {
             if (el.title) {
-                el.filmsLink = el.title.split(' ').join('_');
+                el.filmLink = spliter(el.title);
             }
             
         });
@@ -31,11 +36,11 @@ router.get('/', async (req,res)=>{
 router.post('/',async(req,res)=> {
     const {userid} = req.body;
     try {
-        const getUser = await User.findUserById(userid);
+        const getUser = await User.query(USERS,ID,userId)
         const favFilms = await Favourite.getAllFavourites(userid);
         favFilms.forEach(el => {
             if (el.title) {
-                el.filmsLink = el.title.split(' ').join('_');
+                el.filmLink = spliter(el.title);
             }       
         });
         if (getUser) {
@@ -63,7 +68,7 @@ router.post('/signup',async(req,res)=>{
     try {
         if (nickname&&email&&password) {
             const newUser = await User.addUser(email,nickname,password)
-            console.log(newUser);
+            
             if (newUser) {
 
                 
@@ -86,17 +91,21 @@ router.get('/signin',(req,res)=>{
 
 router.post('/signin',async(req,res)=>{
     try{
-        
-        const user = await User.logIn(req.body.email,req.body.password);
-        if(user?.password === req.body.password) {
+        const {email,password} = req.body
+        const user = await User.logIn(email,password);
+        if(user?.password === password) {
 
-            return res.status(200).json(user.id);
+            let isAdmin = false;
+            if (user.role ==='admin')  isAdmin=true;
+            const token = createToken({userid:user.id,isAdmin},'secret',config)
+            return res.status(200).json({auth:true,token});
             
         }
         throw new Error('wrong password or email');
     }
     catch (e) {
-        res.json(e.message).status(404);
+        
+        res.status(404).json(e.message);
     }
 })
 

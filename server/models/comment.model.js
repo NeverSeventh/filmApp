@@ -1,9 +1,10 @@
 const getDb = require('../db.js');
+const ActiveRecordEntitiy = require('./ActiveRecordEntitiy.model.js');
 const db = getDb.getDb();
 
-class Comment {
+class Comment extends ActiveRecordEntitiy {
     static async findCommentById(id) {
-        const [comment] = await db.query('SELECT comments.text,comments.id,comments.film_id,users.nickname FROM comments left join users on comments.user_id = users.id WHERE comments.id=?',[id]);
+        const [comment] = await db.query('SELECT comments.text,comments.id,comments.film_id,users.nickname FROM comments join users on comments.user_id = users.id WHERE comments.id=?',[id]);
         return comment;
 
    
@@ -16,12 +17,12 @@ class Comment {
     }
 
     static async findAllCommentsByFilm(filmId) {
-        const comments = await db.query('select comments.id,comments.text,users.nickname from comments  left join users on comments.user_id = users.id where film_id=?',[filmId]);
+        const comments = await db.query('select comments.id,comments.text,users.nickname from comments join users on comments.user_id = users.id where film_id=?',[filmId]);
         return comments;
     }
 
     static async findAllCommentsByUser(userId) {
-        const comments = await db.query('select * from comments  left join users on comments.user_id = users.id where film_id=?',[userId]);
+        const comments = await db.query('select comments.id,user_id,film_id,text,users.nickname from comments join users on comments.user_id = users.id where comments.user_id = ?',[userId]);
         return comments;
     }
 

@@ -5,22 +5,21 @@ class Rating {
     static async ratingControl(userId,filmId,rating) {
         const check = await db.query('SELECT * FROM ratings WHERE user_id=? and film_id=?',[userId,filmId]);
         if(check.length ===0) {
-            await db.query('INSERT INTO ratings(user_id,film_id,rating) values(?,?,?)',[userId,filmId,rating])
+            const res = await db.query('INSERT INTO ratings(user_id,film_id,rating) values(?,?,?)',[userId,filmId,rating])
         }else {
-            await db.query('UPDATE ratings SET rating=? WHERE user_id=? and film_id=?',[rating,userId,filmId])
+            const res = await db.query('UPDATE ratings SET rating=? WHERE user_id=? and film_id=?',[rating,userId,filmId])
         }
-        return;
+        console.log(res);
+        return res;
     }
 
-    static async findAllRatingsByUser(userId) {
-        const ratings = await db.query('select * from ratings left join films on film_id = films.id where user_id=? ',[userId]);
+
+    static async findAllRatingsByColumn(column,id) {
+        const ratings = await db.query('select * from ratings join films on film_id = films.id where ?=?',[column,id])
         return ratings;
     }
 
-    static async findAllRatingsByFilms(filmId) {
-        const ratings = await db.query('select * from ratings left join films on film_id = films.id where film_id=? ',[filmId]);
-        return ratings;
-    }
+
     
     static async findFilmRating(filmid,userid) {
         const [rating] = await db.query('select rating from ratings left join films on film_id = films.id left join users on user_id = users.id where film_id=? and user_id = ?',[filmid,userid])

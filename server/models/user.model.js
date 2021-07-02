@@ -1,6 +1,7 @@
 const getDb = require('../db.js');
+const ActiveRecordEntitiy = require('./ActiveRecordEntitiy.model.js');
 const db = getDb.getDb();
-class User {
+class User extends ActiveRecordEntitiy {
 
 
     static async findUserById(id) {

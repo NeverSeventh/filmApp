@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { fetchLogin } from "../../redux/AC/users";
-
+import './login.scss';
 
 const Login = () => {
 
@@ -14,10 +14,18 @@ const Login = () => {
 
     return (
         <>
-        <form  onSubmit={loginHandler}>
-            <input type="email" name="email" id="" />
-            <input type="password" name="password" id="" />
-            <button type="submit">Войти</button>
+        <form className="login"  onSubmit={loginHandler}>
+            <div className="login__item">
+                <label htmlFor="email">Email</label>
+                <input type="email" name="email" id="email" />
+            </div>
+            <div className="login__item">
+                <label htmlFor="password">Пароль</label>
+                <input type="password" name="password" id="password" />
+            </div>
+            
+            
+            <button type="submit" className="btn">Войти</button>
         </form>
         
         </>

@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { ALL_FILMS, LOGIN, LOGOUT, SIGNUP,CURRENT_FILM, CURRENT_USER, ADD_TO_FAVOURITES, ADD_COMMENT, RATE_FILM, FILM_RATING_USER } from "../types";
+import { ALL_FILMS, LOGIN, LOGOUT, SIGNUP,CURRENT_FILM, CURRENT_USER, ADD_TO_FAVOURITES, ADD_COMMENT, RATE_FILM, FILM_RATING_USER,IS_ADMIN } from "../types";
 
 const reducer = (state=[],action) => {
     switch(action.type) {
@@ -8,13 +8,20 @@ const reducer = (state=[],action) => {
         case ALL_FILMS:
             return {
                 ...state,
-                films:action.payload
+                films:action.payload,
+                errorMessg:''
+            }
+        case FILM_RATING_USER:
+            return {
+                ...state,
+                currentRating:action.payload
             }
         case CURRENT_FILM:
             
             return {
                 ...state,
-                currentFilm:action.payload
+                currentFilm:action.payload,
+                errorMessg:''
             }
         case ADD_TO_FAVOURITES:
             return state;
@@ -26,19 +33,15 @@ const reducer = (state=[],action) => {
             }
         case RATE_FILM: 
             return state
-        case FILM_RATING_USER:
-            return {
-                ...state,
-                ...state.currentFilm,
-                currentRating:action.payload
-            }
+
 
 
         // User Reducer
         case LOGIN:
             return {
                 ...state,
-                userid:action.payload
+                userid:action.payload,
+                errorMessg:''
             } 
             
                 
@@ -47,18 +50,31 @@ const reducer = (state=[],action) => {
         case CURRENT_USER:
             return {
                 ...state,
-                currentUser:action.payload
+                currentUser:action.payload,
+                errorMessg:''
             }
 
         case SIGNUP:
             return {
                 ...state,
-                userid:action.payload
+                userid:action.payload,
+                errorMessg:''
             }
 
         case LOGOUT:
             return state
-    
+        
+        case IS_ADMIN:
+            return {
+                ...state,
+                isAdmin:action.payload
+            }
+
+        case ERROR:
+            return {
+                ...state,
+                errorMessg:action.payload,
+            }
 
         default:
             return state;

@@ -6,7 +6,7 @@ import "./navbar.scss"
 
 const Navbar = () => {
     const userid = useSelector(state=>state.userid)
-
+    const isAdmin = useSelector(state=>state.isAdmin)
     return(
         <nav className="navbar">
             <ul className="navbar__list">
@@ -25,10 +25,12 @@ const Navbar = () => {
                     <li className="navbar__item">
                     <NavLink to="/signup">signup</NavLink>
                     </li>
+                    
                    
             </>
             
              }
+             {isAdmin ? <li className="navbar__item"><NavLink to="/admin">admin</NavLink></li> :<></>}
             </ul>
             
            

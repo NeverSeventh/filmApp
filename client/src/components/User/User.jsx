@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
 import { fetchCurrentUser } from "../../redux/AC/users";
-
+import UserFilm from "./UserFilm/UserFilm";
 const User = () => {
 
     const dispatch =useDispatch();
@@ -18,7 +18,7 @@ const User = () => {
     
 
     const filmlist = user?.favFilms?.map(el=>{
-        return <li> <NavLink  to={"/film/"+el.filmsLink}>{el.title}</NavLink></li>
+        return <li><UserFilm film={el} userid={userid}/></li>
     })
 
     return(

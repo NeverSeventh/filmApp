@@ -5,13 +5,16 @@ const User = require('../models/user.model.js');
 const Favourite = require('../models/favourite.model.js');
 const Rating = require('../models/rating.model.js');
 const Comment = require('../models/comment.model.js');
+const { FILMS, USERS } = require('../constants/tables.js');
+const { ID, TITLE } = require('../constants/columns.js');
+const { spliter } = require('../functions/functions.js');
 
 
 router.get('/all',async (req,res)=>{
     try {
-        let filmsList =await Film.getAllFilms();
+        let filmsList =await Film.queryAll(FILMS);
         filmsList.forEach(el => {
-            el.filmLink =  el.title.split(' ').join('_');
+            el.filmLink =  spliter(el.title);
         });
          res.json(filmsList).status(200);
     } catch (error) {
@@ -29,10 +32,10 @@ router.post('/add', async(req,res)=>{
 
         const filmName = req.body.film;
 
-        console.log(filmName,userId);
+        
         if(filmName && userId) {
-            const user = await User.findUserById(userId);
-            const film = await Film.findFilmByTitle(filmName);
+            const user = await User.query(USERS,ID,userId);
+            const film = await Film.query(FILMS,TITLE,filmName);
             if (user && film) {
                 await Favourite.addFavourite(user.id,film.id);
                 return res.status(200).json({message:'film added'})
@@ -48,10 +51,10 @@ router.post('/add', async(req,res)=>{
 })
 
 router.get('/:title', async(req,res)=>{
-    let title=req.params.title;
+    const title=req.params.title;
     try {
-        const  normalTitle = title.split('_').join(' ');
-         const film = await Film.findFilmByTitle(normalTitle);
+        const  normalTitle = spliter(title);
+         const film = await Film.query(FILMS,TITLE,normalTitle);
 
         if (film) {
             const comments = await Comment.findAllCommentsByFilm(film.id);
@@ -69,26 +72,20 @@ router.get('/:title', async(req,res)=>{
 
 router.post('/:title',async (req,res)=>{
     const rating = parseInt(req.body.rating);
-    let title = req.body.title
+    const title = req.body.title
     const userId = req.body.userid;
     const commentText = req.body.commentText;
-    const normalTitle = title.split('_').join(' ');
-    const film = await Film.findFilmByTitle(normalTitle);
+    const normalTitle = spliter(title);
+    const film = await Film.query(FILMS,TITLE,normalTitle);
+    
     if (rating&&userId&&film)  {
         try {
 
             
-            const user = await User.findUserById(userId);   
-            await Rating.ratingControl(user.id,film.id,rating)
+            const user = await User.query(USERS,ID,userId);   
+            const responce = await Rating.ratingControl(user.id,film.id,rating);
             
-            // const check = await db.query('SELECT * FROM ratings WHERE user_id=? and film_id=?',[user.id,film.id]);
-
-            // if(check.length ===0) {
-            //     await db.query('INSERT INTO ratings(user_id,film_id,rating) values(?,?,?)',[userId,film.id,rating])
-            // }else {
-            //     await db.query('UPDATE ratings SET rating=? WHERE user_id=? and film_id=?',[rating,userId,film.id])
-            // }
-                
+            return res.status(200);
             
         } catch (e) {
             res.json(e.message)
@@ -107,10 +104,10 @@ router.post('/:title',async (req,res)=>{
 })
 
 router.post('/:title/rating', async(req,res) => {
-    let title = req.body.title;
-    const normalTitle = title.split('_').join(' ');
-    const film = await Film.findFilmByTitle(normalTitle);
-    const userid = req.body.userid;
+    const {title} = req.body;
+    const normalTitle = spliter(title);
+    const film = await Film.query(FILMS,TITLE,normalTitle);
+    const {userid} = req.body;
     if (film,userid) {
         try {
             const rating = await Rating.findFilmRating(film.id,userid);

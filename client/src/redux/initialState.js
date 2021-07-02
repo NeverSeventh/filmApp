@@ -6,7 +6,9 @@ const initialState = {
     currentFilm:{},
     currentUser:{},
     userid:undefined,
-    currentRating:undefined
+    currentRating:0,
+    isAdmin:false,
+    errorMesg:'',
 }
 
 export default initialState;
