@@ -1,4 +1,4 @@
-import { CURRENT_USER, IS_ADMIN, LOGIN, SIGNUP } from "../types"
+import { CURRENT_USER, IS_ADMIN, LOGIN, SIGNUP, TOKEN } from "../types"
 
 
 
@@ -10,6 +10,10 @@ const isAdminActionCreator = (payload) => {
     return {type:IS_ADMIN,payload:payload}
 }
 
+const tokenActionCreator = (payload) => {
+    return {type:TOKEN,payload:payload}
+}
+
 const fetchLogin = (email, password) => async(dispatch,getState) => {
     const responce = await fetch("http://localhost:6970/user/signin",{
         method: 'POST',
@@ -19,7 +23,8 @@ const fetchLogin = (email, password) => async(dispatch,getState) => {
     
     if (responce.status === 200) {
         const userInfo = await responce.json();
-        
+        localStorage.setItem('token',`${userInfo.token}`);
+        dispatch(tokenActionCreator(userInfo.token))
         dispatch(loginActionCreator(userInfo.userid));
         dispatch(isAdminActionCreator(userInfo.isAdmin));
     }
@@ -34,11 +39,12 @@ const currentUserActionCreator = (payload) => {
 const fetchCurrentUser = (userid) => async(dispatch,getState) => {
    const responce = await fetch('http://localhost:6970/user',{
     method: 'POST',
-    headers: {'Content-Type': 'application/json;charset=utf-8'},
+    headers: {'Content-Type': 'application/json;charset=utf-8',
+    "Authorization": `${localStorage.getItem('token')}`},
     body:JSON.stringify({userid:userid})
    });
    const user = await responce.json();
-   
+   //getState().authToken;
    dispatch(currentUserActionCreator(user));
 }
 

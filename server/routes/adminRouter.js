@@ -1,9 +1,10 @@
 const {Router} = require('express');
-const { ID } = require('../constants/columns.js');
+const { ID, TITLE } = require('../constants/columns.js');
 const { FILMS } = require('../constants/tables.js');
 const router = Router();
 const getDb = require('../db.js');
 const { spliter } = require('../functions/functions.js');
+const authenticateToken = require('../middlewares/tokenVerify.js');
 const Film = require('../models/film.model.js');
 const db = getDb.getDb();
 
@@ -43,20 +44,22 @@ router.get('/editfilm/:id',async (req,res)=>{
 
 })
 
-router.post('/editfilm/:id',async (req,res)=>{
-    const id = req.params.id;
-    const {title,description} =req.body;
+router.post('/editfilm',authenticateToken,async (req,res)=>{
+    
+    const {id,title,description} =req.body;
     try {
+        
         const film= await Film.query(FILMS,ID,id);
         
-        if (film.id){
+        if (film.id,req.auth){
             await Film.updateFilm(title,description,id)
-            return res.status(200);
+            return res.status(200).json('Update succesful');
         }
         throw new Error();
         
         
     } catch (e) {
+        console.log(e.message)
         res.json(e.message).status(500);
     }
 

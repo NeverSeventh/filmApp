@@ -10,6 +10,7 @@ class Favourite extends ActiveRecordEntitiy{
 
     static async getAllFavourites(userId) {
         const favFilms = await db.query('select films.id, films.title, films.description,ratings.rating from favourites join films on favourites.film_id = films.id left join ratings on favourites.film_id = ratings.film_id and favourites.user_id = ratings.user_id where favourites.user_id = ?',[userId]);
+       
         return favFilms;
     }
 }

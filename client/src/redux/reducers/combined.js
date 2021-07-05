@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { ALL_FILMS, LOGIN, LOGOUT, SIGNUP,CURRENT_FILM, CURRENT_USER, ADD_TO_FAVOURITES, ADD_COMMENT, RATE_FILM, FILM_RATING_USER,IS_ADMIN } from "../types";
+import { ALL_FILMS, LOGIN, LOGOUT, SIGNUP,CURRENT_FILM, CURRENT_USER, ADD_TO_FAVOURITES, ADD_COMMENT, RATE_FILM, FILM_RATING_USER,IS_ADMIN,ERROR,TOKEN, EDIT_FILM } from "../types";
 
 const reducer = (state=[],action) => {
     switch(action.type) {
@@ -43,7 +43,12 @@ const reducer = (state=[],action) => {
                 userid:action.payload,
                 errorMessg:''
             } 
-            
+        
+        case TOKEN: 
+            return {
+                ...state,
+                authToken:action.payload
+            }
                 
 
         
@@ -69,6 +74,11 @@ const reducer = (state=[],action) => {
                 ...state,
                 isAdmin:action.payload
             }
+
+        //admin reducer
+
+        case EDIT_FILM:
+            return state;
 
         case ERROR:
             return {

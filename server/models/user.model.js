@@ -4,14 +4,6 @@ const db = getDb.getDb();
 class User extends ActiveRecordEntitiy {
 
 
-    static async findUserById(id) {
-        
-            const [user] = await db.query('SELECT * FROM users WHERE id=?',[id]);
-
-            return user;
-
-        
-    }
 
     static async addUser(email,nickname,password) {
         const insert = await db.query('INSERT INTO users (email,password,nickname) values(?,?,?)',[email,password,nickname]);

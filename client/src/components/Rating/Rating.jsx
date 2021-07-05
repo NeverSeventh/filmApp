@@ -8,31 +8,37 @@ const Rating = ({value,title,userid}) => {
     const dispatch = useDispatch();
     
     const [ratingElement,setRatingElement] = useState('');
-
+    
 
     const ratingChanged = (newRating) => {
         dispatch(fetchRateFilm(title,userid,newRating));
     }
-    
     useEffect(()=> {
         const fetchRating = async() => {
             const responce = await fetch(`http://localhost:6970/film/${title}/rating`,{
                 method: 'POST',
-                headers: {'Content-Type': 'application/json;charset=utf-8'},
+                headers: {'Content-Type': 'application/json;charset=utf-8',
+                "Authorization": `${localStorage.getItem('token')}`},
                 body:JSON.stringify({userid:userid,title:title})
                });
                
-            const rating = await responce.json();
-            setRatingElement(<ReactStarts
-                value={rating}
-                count={5}
-                onChange={ratingChanged}
-                size={24}
-                activeColor="#ffd700"
-            
-            />)
+            if (responce.status === 200) {
+                const rating = await responce.json();
+                setRatingElement(<ReactStarts
+                    value={rating}
+                    count={5}
+                    onChange={ratingChanged}
+                    size={24}
+                    activeColor="#ffd700"
+                
+                />)
+            }
+
         }
-        fetchRating();
+        if (localStorage.getItem('token')) {
+            fetchRating();
+        }
+        
     },[])
 
 

@@ -3,7 +3,7 @@
 
 
 const spliter = (value)=> {
-    return value.split(' ').join('_')
+    return value.split('_').join(' ')
 }
 
 const createLink = (arr) => {

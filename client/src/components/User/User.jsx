@@ -10,10 +10,12 @@ const User = () => {
     const user = useSelector(state=>state.currentUser);
     const userid = useSelector(state=>state.userid);
     useEffect(()=> {
-        dispatch(fetchCurrentUser(userid));
+        if (localStorage.getItem('token')) {
+            dispatch(fetchCurrentUser(userid));
+        }
+        
     },[])
 
-    
 
     
 

@@ -7,10 +7,11 @@ const { ID } = require('../constants/columns.js');
 const { spliter } = require('../functions/functions.js');
 const createToken = require('../auth/auth.js');
 const config = require('../auth/config.js');
+const authenticateToken = require('../middlewares/tokenVerify.js');
 
-router.get('/', async (req,res)=>{
+router.get('/',authenticateToken, async (req,res)=>{
     const userId=req.session?.user?.id;
-
+    console.log(req.auth)
 
     
     try {
@@ -33,27 +34,35 @@ router.get('/', async (req,res)=>{
     
 })
 
-router.post('/',async(req,res)=> {
+router.post('/',authenticateToken,async(req,res)=> {
     const {userid} = req.body;
+    console.log(req.auth);
+    
     try {
-        const getUser = await User.query(USERS,ID,userId)
+        if (!req.auth) throw new Error('Auth check failed')
+        const getUser = await User.query(USERS,ID,userid);
+        
         const favFilms = await Favourite.getAllFavourites(userid);
+       
+        
         favFilms.forEach(el => {
             if (el.title) {
                 el.filmLink = spliter(el.title);
             }       
         });
+        
         if (getUser) {
             const user = {
                 id:getUser.id,
                 email:getUser.email,
                 nickname:getUser.nickname
             }
+            
             return res.json({user,favFilms});
         }
         return res.json('user not found')
     } catch (e) {
-      res.json('user not found')  
+      res.json(e.message)  
     }
 
 
@@ -97,8 +106,8 @@ router.post('/signin',async(req,res)=>{
 
             let isAdmin = false;
             if (user.role ==='admin')  isAdmin=true;
-            const token = createToken({userid:user.id,isAdmin},'secret',config)
-            return res.status(200).json({auth:true,token});
+            const token = createToken({userid:user.id},'secret',config)
+            return res.status(200).json({userid:user.id,token,isAdmin});
             
         }
         throw new Error('wrong password or email');

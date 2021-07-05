@@ -19,7 +19,8 @@ const currentFilmActionCreator = (payload) => {
 const fetchCurrentFilm = (title) => async(dispatch,getState) => {
     const responce = await fetch(`http://localhost:6970/film/${title}`);
     const film = await responce.json();
-
+    
+    
     dispatch(currentFilmActionCreator(film));
 }
 
@@ -77,10 +78,12 @@ const fetchFilmRatingUser = (title,userid) => async (dispatch,getState) => {
         headers: {'Content-Type': 'application/json;charset=utf-8'},
         body:JSON.stringify({userid:userid,title:title})
        });
-       
-    const rating = await responce.json();
-       
-    dispatch(filmRatingUserActionCreator(rating));
+    if (responce.status ===200) {
+        const rating = await responce.json();
+    
+        dispatch(filmRatingUserActionCreator(rating));
+    }
+
     
 }
 
