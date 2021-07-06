@@ -14,7 +14,8 @@ const Signup = () => {
 
     const signUpHandler = (e)=> {
         e.preventDefault();
-        dispatch(fetchSignup(e.target.nickname.value,e.target.email.value,e.target.password.value));
+        const {nickname,email,password} = e.target;
+        dispatch(fetchSignup(nickname.value,email.value,password.value));
     }
 
     useEffect(()=> {

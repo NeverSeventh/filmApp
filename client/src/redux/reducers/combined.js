@@ -1,5 +1,5 @@
 import { combineReducers } from "redux";
-import { ALL_FILMS, LOGIN, LOGOUT, SIGNUP,CURRENT_FILM, CURRENT_USER, ADD_TO_FAVOURITES, ADD_COMMENT, RATE_FILM, FILM_RATING_USER,IS_ADMIN,ERROR,TOKEN, EDIT_FILM } from "../types";
+import { ALL_FILMS, LOGIN, LOGOUT, SIGNUP,CURRENT_FILM, CURRENT_USER, ADD_TO_FAVOURITES, ADD_COMMENT, RATE_FILM, FILM_RATING_USER,IS_ADMIN,ERROR,TOKEN, EDIT_FILM,NO_ERROR } from "../types";
 
 const reducer = (state=[],action) => {
     switch(action.type) {
@@ -9,7 +9,7 @@ const reducer = (state=[],action) => {
             return {
                 ...state,
                 films:action.payload,
-                errorMessg:''
+                
             }
         case FILM_RATING_USER:
             return {
@@ -21,7 +21,7 @@ const reducer = (state=[],action) => {
             return {
                 ...state,
                 currentFilm:action.payload,
-                errorMessg:''
+                
             }
         case ADD_TO_FAVOURITES:
             return state;
@@ -41,7 +41,7 @@ const reducer = (state=[],action) => {
             return {
                 ...state,
                 userid:action.payload,
-                errorMessg:''
+                
             } 
         
         case TOKEN: 
@@ -56,18 +56,23 @@ const reducer = (state=[],action) => {
             return {
                 ...state,
                 currentUser:action.payload,
-                errorMessg:''
+                
             }
 
         case SIGNUP:
             return {
                 ...state,
                 userid:action.payload,
-                errorMessg:''
+                
             }
 
         case LOGOUT:
-            return state
+            return {
+                ...state,
+                userid:undefined,
+                currentUser:{},
+                isAdmin:false
+            }
         
         case IS_ADMIN:
             return {
@@ -84,6 +89,11 @@ const reducer = (state=[],action) => {
             return {
                 ...state,
                 errorMessg:action.payload,
+            }
+        case NO_ERROR:
+            return {
+                ...state,
+                errorMessg:''
             }
 
         default:

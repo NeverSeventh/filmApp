@@ -6,6 +6,8 @@ const FilmPreview = ({film,link}) => {
         film.description = film.description.substring(0,300);
         film.description = film.description +  '...';
     }
+
+
     return (
         <div className="filmPreview">
             <NavLink  to={link+film.filmLink}>
@@ -17,6 +19,7 @@ const FilmPreview = ({film,link}) => {
                     </div>
                 </div>
             </NavLink>
+            
         </div>
     )
 }

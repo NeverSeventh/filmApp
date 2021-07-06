@@ -1,5 +1,6 @@
 import { useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
+import Logout from "../Logout/Logout";
 import "./navbar.scss"
 
 
@@ -16,7 +17,10 @@ const Navbar = () => {
                 <li className="navbar__item">
                 <NavLink to="/film">film</NavLink>
                 </li>
-                {userid ? <></>          :
+                {userid ? <>
+                    <li className="navbar__item">
+                    <Logout/>
+                    </li></>          :
                     <>
                     <li className="navbar__item">
                         <NavLink to="/login">login</NavLink>
@@ -25,7 +29,7 @@ const Navbar = () => {
                     <li className="navbar__item">
                     <NavLink to="/signup">signup</NavLink>
                     </li>
-                    
+
                    
             </>
             

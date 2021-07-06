@@ -80,8 +80,10 @@ router.post('/signup',async(req,res)=>{
             
             if (newUser) {
 
-                
-                return res.status(200).json(newUser.id)
+            let isAdmin = false;
+            if (newUser.role ==='admin')  isAdmin=true;
+            const token = createToken({userid:newUser.id,isAdmin},'secret',config)
+            return res.status(200).json({userid:newUser.id,token,isAdmin});
             }else {
                 throw new Error('cannot create user');
             }
@@ -90,7 +92,8 @@ router.post('/signup',async(req,res)=>{
         }
     }
     catch(e) {
-        res.json({message:e.message});
+        
+        res.json(e.message).status(501);
     }
 })
 
@@ -106,7 +109,7 @@ router.post('/signin',async(req,res)=>{
 
             let isAdmin = false;
             if (user.role ==='admin')  isAdmin=true;
-            const token = createToken({userid:user.id},'secret',config)
+            const token = createToken({userid:user.id,isAdmin},'secret',config)
             return res.status(200).json({userid:user.id,token,isAdmin});
             
         }
@@ -119,11 +122,7 @@ router.post('/signin',async(req,res)=>{
 })
 
 router.get('/logout',async (req,res)=>{
-    req.session.destroy((err)=>{
-        if (err) return res.status(401)
-        res.clearCookie(res.app.get('cookieName'));
-        return res.status(200).send({message:"logout succesful"});
-    })
+
 })
 
 module.exports = router;

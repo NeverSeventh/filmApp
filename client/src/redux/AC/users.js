@@ -1,4 +1,4 @@
-import { CURRENT_USER, IS_ADMIN, LOGIN, SIGNUP, TOKEN } from "../types"
+import { CURRENT_USER, IS_ADMIN, LOGIN, LOGOUT, SIGNUP, TOKEN } from "../types"
 
 
 
@@ -24,7 +24,6 @@ const fetchLogin = (email, password) => async(dispatch,getState) => {
     if (responce.status === 200) {
         const userInfo = await responce.json();
         localStorage.setItem('token',`${userInfo.token}`);
-        dispatch(tokenActionCreator(userInfo.token))
         dispatch(loginActionCreator(userInfo.userid));
         dispatch(isAdminActionCreator(userInfo.isAdmin));
     }
@@ -58,11 +57,20 @@ const fetchSignup = (nickname,email,password) => async(dispatch,getState) => {
         headers: {'Content-Type': 'application/json;charset=utf-8'},
         body:JSON.stringify({email:email, password:password,nickname:nickname})
     });
-    
-    const userid = await responce.json();
-    console.log(userid);
-    dispatch(signupActionCreator(userid));
+    if (responce.status === 200) {
+        const data = await responce.json();
+        localStorage.setItem('token',`${data.token}`);
+        dispatch(signupActionCreator(data.userid));
+        dispatch(isAdminActionCreator(data.isAdmin));
+    }
+
+}
+
+const logoutActionCreator = (payload) => {
+    localStorage.removeItem('token');
+    return {type:LOGOUT,payload:payload}
 }
 
 
-export {fetchLogin, fetchCurrentUser,fetchSignup}
+
+export {fetchLogin, fetchCurrentUser,fetchSignup,logoutActionCreator}

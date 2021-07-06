@@ -12,6 +12,7 @@ const CURRENT_FILM = 'CURRENT_FILM';
 const TOKEN = "TOKEN";
 const FILM_RATING_USER = 'FILM_RATING_USER';
 const ERROR = 'ERROR';
+const NO_ERROR = "NO_ERROR";
 const ADD_FILM = "ADD_FILM";
 const EDIT_FILM = "EDIT_FILM";
 const DELETE_FILM = "DELETE_FILM";
@@ -34,5 +35,6 @@ export {
     FILM_RATING_USER,
     IS_ADMIN,
     TOKEN,
-    ERROR
+    ERROR,
+    NO_ERROR
 }

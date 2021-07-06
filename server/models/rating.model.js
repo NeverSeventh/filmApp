@@ -1,7 +1,8 @@
 const getDb = require('../db.js');
+const ActiveRecordEntitiy = require('./ActiveRecordEntitiy.model.js');
 const db = getDb.getDb();
 
-class Rating {
+class Rating extends ActiveRecordEntitiy {
     static async ratingControl(userId,filmId,rating) {
         try {
             const check = await db.query('SELECT * FROM ratings WHERE user_id=? and film_id=?',[userId,filmId]);

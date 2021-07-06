@@ -27,6 +27,10 @@ class ActiveRecordEntitiy {
         const data = await db.query(`SELECT * FROM ${table}`);
         return data;
     }
+
+    static async delete (table,column,value) {
+        const data = await db.query(`delete from ${table} where ${column} = ?`,[value])
+    }
     
 }
 

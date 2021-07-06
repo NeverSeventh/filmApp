@@ -6,13 +6,14 @@ import Comment from "../Comment/Comment";
 import Rating from '../Rating/Rating'
 import CommentForm from "../CommentForm/CommentForm";
 import "./film.scss"
+import { fetchDeleteFilm } from "../../redux/AC/admin";
 
 const Film = () => {
     let {title} = useParams();
     
     const currentFilm = useSelector(state=> state.currentFilm);
     const userid = useSelector(state=>state.userid);
- 
+    const isAdmin = useSelector(state=>state.isAdmin)
 
 
     const image = currentFilm?.film?.img || '../img/placeholderpng.png';
@@ -47,6 +48,10 @@ const Film = () => {
         dispatch(fetchAddToFavourites(userid,currentFilm.film.title));
     }
 
+    const deleteHandler = () => {
+        dispatch(fetchDeleteFilm(currentFilm.film.id))
+    }
+
 
     return (
         <div className="currentFilm">
@@ -63,6 +68,8 @@ const Film = () => {
             <h2>Comments</h2>
             {comments}
         </div>
+        {isAdmin ?<button  onClick={deleteHandler}>Удалить фильм</button> : <></>}
+        
         {userid ? <CommentForm userid={userid}  title={title} /> : <></>}
         </div>
     )

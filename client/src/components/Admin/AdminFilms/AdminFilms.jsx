@@ -8,7 +8,7 @@ const AdminFilms = () => {
     
    const dispatch = useDispatch();
    
-
+   
    
    useEffect(()=> {
        dispatch(fetchAllFilms());
