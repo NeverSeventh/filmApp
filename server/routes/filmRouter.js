@@ -7,7 +7,6 @@ const Rating = require('../models/rating.model.js');
 const Comment = require('../models/comment.model.js');
 const { FILMS, USERS } = require('../constants/tables.js');
 const { ID, TITLE } = require('../constants/columns.js');
-const { spliter } = require('../functions/functions.js');
 const authenticateToken = require('../middlewares/tokenVerify.js');
 const AuthError = require('../errors/authError.js');
 
@@ -15,9 +14,7 @@ const AuthError = require('../errors/authError.js');
 router.get('/all',async (req,res)=>{
     try {
         let filmsList =await Film.queryAll(FILMS);
-        filmsList.forEach(el => {
-            el.filmLink =  spliter(el.title);
-        });
+
          res.json(filmsList).status(200);
     } catch (error) {
         res.json(error.message).status(404);
@@ -30,16 +27,19 @@ router.get('/all',async (req,res)=>{
 router.post('/add',authenticateToken, async(req,res)=>{
 
     try {
-        const userid = req;
+        const {userid} = req;
         
         const {filmTitle} = req.body;
 
         
         if(filmTitle && userid) {
             const user = await User.query(USERS,ID,userid);
-            const film = await Film.query(FILMS,TITLE,filmTitle );
+            
+            const film = await Film.query(FILMS,TITLE,filmTitle);
+            
             if (user && film) {
-                await Favourite.addFavourite(user.id,film.id);
+                
+                const res = await Favourite.addFavourite(user.id,film.id);
                 return res.status(200).json({message:'film added'})
             }
         }
@@ -48,6 +48,7 @@ router.post('/add',authenticateToken, async(req,res)=>{
         throw new Error();
     }
     catch(e) {
+        
         res.json(e.message).status(501);
     }
 })
@@ -55,9 +56,9 @@ router.post('/add',authenticateToken, async(req,res)=>{
 router.get('/:title', async(req,res)=>{
     
     try {
-        const title=req.params.title;
-        const  normalTitle = spliter(title);
-        const film = await Film.query(FILMS,TITLE,normalTitle);
+        const {title}=req.params;
+       
+        const film = await Film.query(FILMS,TITLE,title);
 
         if (film) {
             const comments = await Comment.findAllCommentsByFilm(film.id);
@@ -76,20 +77,14 @@ router.get('/:title', async(req,res)=>{
 
 router.post('/:title',authenticateToken,async(req,res)=> {
     try {
-        const rating = parseInt(req.body.rating);
+        
 
         const {title,commentText} = req.body
-        const normalTitle = spliter(title);
-        const film = await Film.query(FILMS,TITLE,normalTitle);
+        
+        const film = await Film.query(FILMS,TITLE,title);
         const {userid} = req;
         if (!userid) throw new AuthError();
-        if (rating&&film) {
-                        
-            const user = await User.query(USERS,ID,userid);   
-            const responce = await Rating.ratingControl(user.id,film.id,rating);
-            
-            return res.status(200).end();
-        }
+
 
         if (film&&commentText) {
 
@@ -108,45 +103,31 @@ router.post('/:title',authenticateToken,async(req,res)=> {
     }
 })
 
-// router.post('/:title',authenticateToken,async (req,res)=>{
-
-//     const rating = parseInt(req.body.rating);
-
-//     const {title,commentText} = req.body
-//     const normalTitle = spliter(title);
-//     const film = await Film.query(FILMS,TITLE,normalTitle);
-//     const {userid} = req;
-    
-//     if (rating&&userid&&film)  {
-//         try {
-
+router.put('/:title/rating', authenticateToken, async(req,res) => {
+    try {
+        const rating = parseInt(req.body.rating);
+        const {title} = req.body;
+        const film = await Film.query(FILMS,TITLE,title);
+        const {userid} = req;
+        if (!userid) throw new AuthError();
+        if (rating&&film) {
+                        
+            const user = await User.query(USERS,ID,userid);   
+            const responce = await Rating.ratingControl(user.id,film.id,rating);
             
-//             const user = await User.query(USERS,ID,userid);   
-//             const responce = await Rating.ratingControl(user.id,film.id,rating);
-            
-//             return res.status(200).end();
-            
-//         } catch (e) {
-//             res.json(e.message)
-//         }
-//     } 
-//     if (userid&&film&&commentText) {
-//         try {
-//             comment = await Comment.addComment(userid,film.id,commentText);
-//             return res.json(comment).status(200);
-//         } catch (e) {
-//             res.status(501).end()
-//         }
+            return res.status(200).end();
+        }
 
-//     }
-    
-// })
+    } catch (e) {
+        res.json(e.message).status(401)
+    }
+})
 
 router.post('/:title/rating', authenticateToken,async(req,res) => {
     try {
     const {title} = req.body;
-    const normalTitle = spliter(title);
-    const film = await Film.query(FILMS,TITLE,normalTitle);
+    
+    const film = await Film.query(FILMS,TITLE,title);
     const {userid} = req;
         
         if (film,userid) {

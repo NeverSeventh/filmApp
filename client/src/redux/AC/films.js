@@ -28,7 +28,7 @@ const addToFavouritesActionCreator = (payload) => {
     return {type:ADD_TO_FAVOURITES, payload:payload}
 }
 
-const fetchAddToFavourites = (userid,filmTitle) => async(dispatch,getState) => {
+const fetchAddToFavourites = (filmTitle) => async(dispatch,getState) => {
     const responce = await fetch('http://localhost:6970/film/add',{
         method: 'POST',
         headers: {'Content-Type': 'application/json;charset=utf-8',
@@ -43,11 +43,12 @@ const addCommentActionCreator = (payload) => {
     return{type:ADD_COMMENT, payload:payload}
 }
 
-const fetchAddComment = (title,userid,text) => async (dispatch,getState) => {
+const fetchAddComment = (title,text) => async (dispatch,getState) => {
     const responce = await fetch(`http://localhost:6970/film/${title}`,{
         method: 'POST',
-        headers: {'Content-Type': 'application/json;charset=utf-8'},
-        body:JSON.stringify({userid:userid,title:title, commentText:text})
+        headers: {'Content-Type': 'application/json;charset=utf-8',
+        "Authorization": `${localStorage.getItem('token')}`},
+        body:JSON.stringify({title:title, commentText:text})
        });
     const comment = await responce.json();
     dispatch(addCommentActionCreator(comment))
@@ -58,8 +59,8 @@ const rateFilmActionCreator = (payload) => {
 }
 
 const fetchRateFilm = (title,value) => async (dispatch,getState) => {
-    const responce = await fetch(`http://localhost:6970/film/${title}`,{
-        method: 'POST',
+    const responce = await fetch(`http://localhost:6970/film/${title}/rating`,{
+        method: 'PUT',
         headers: {'Content-Type': 'application/json;charset=utf-8',
         "Authorization": `${localStorage.getItem('token')}`},
         body:JSON.stringify({title:title, rating:value})

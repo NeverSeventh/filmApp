@@ -3,21 +3,19 @@ const router = Router();
 const User = require('../models/user.model.js');
 const Favourite = require('../models/favourite.model.js');
 const { USERS } = require('../constants/tables.js');
-const { ID } = require('../constants/columns.js');
-const { spliter } = require('../functions/functions.js');
+const { ID, EMAIL } = require('../constants/columns.js');
 const createToken = require('../auth/auth.js');
 const config = require('../auth/config.js');
 const authenticateToken = require('../middlewares/tokenVerify.js');
 const UserError = require('../errors/userError.js');
 const UserLoginError = require('../errors/userError.js');
 const AuthError = require('../errors/authError.js');
+const bcrypt = require('bcrypt');
+const saltRounds = 1;
 
 
-
-router.post('/',authenticateToken,async(req,res)=> {
-    
-   
-    
+router.get('/',authenticateToken,async(req,res)=> {
+       
     try {    
         if (!req.auth) throw new AuthError('Auth check failed')
         const {userid} = req;
@@ -25,12 +23,6 @@ router.post('/',authenticateToken,async(req,res)=> {
         
         const favFilms = await Favourite.getAllFavourites(userid);
        
-        
-        favFilms.forEach(el => {
-            if (el.title) {
-                el.filmLink = spliter(el.title);
-            }       
-        });
         
         if (getUser) {
             const user = {
@@ -59,7 +51,9 @@ router.post('/signup',async(req,res)=>{
     try {
         const {nickname,email,password} = req.body;
         if (nickname&&email&&password) {
-            const newUser = await User.addUser(email,nickname,password)
+            const hashedPassword = await bcrypt.hash(password,saltRounds);
+            
+            const newUser = await User.addUser(email,nickname,hashedPassword)
             
             if (newUser) {
 
@@ -75,20 +69,18 @@ router.post('/signup',async(req,res)=>{
         }
     }
     catch(e) {
-        
+        console.log(e.message);
         res.json(e.message).status(501);
     }
 })
 
-router.get('/signin',(req,res)=>{
- 
-})
 
 router.post('/signin',async(req,res)=>{
     try{
         const {email,password} = req.body
-        const user = await User.logIn(email,password);
-        if(user?.password === password) {
+        const user = await User.query(USERS,EMAIL,email);
+        const compare = await bcrypt.compare(password,user.password)
+        if(compare) {
 
             let isAdmin = false;
             if (user.role ==='admin')  isAdmin=true;

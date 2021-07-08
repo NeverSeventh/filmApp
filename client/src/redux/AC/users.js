@@ -36,7 +36,7 @@ const currentUserActionCreator = (payload) => {
 
 const fetchCurrentUser = () => async(dispatch,getState) => {
    const responce = await fetch('http://localhost:6970/user',{
-    method: 'POST',
+    method: 'GET',
     headers: {'Content-Type': 'application/json;charset=utf-8',
     "Authorization": `${localStorage.getItem('token')}`},
    });

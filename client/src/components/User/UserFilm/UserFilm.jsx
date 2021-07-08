@@ -18,7 +18,7 @@ const UserFilm = ({userid,film}) => {
     return (
         <>
         <FilmPreview link={'/film/'} film={film}/>
-        {film.rating ? <Rating value={film.rating} title={film.filmLink} userid={userid} /> :<></>}
+        {film.rating ? <Rating value={film.rating} title={film.title} userid={userid} /> :<></>}
         </>
     )
 }

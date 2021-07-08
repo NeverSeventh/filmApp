@@ -3,7 +3,6 @@ const { ID, TITLE, FILM_ID } = require('../constants/columns.js');
 const { FILMS, COMMENTS, FAVOURITES, RATINGS } = require('../constants/tables.js');
 const router = Router();
 const NotAdminError = require('../errors/notAdmin.js');
-const { spliter } = require('../functions/functions.js');
 const adminVerify = require('../middlewares/adminVerify.js');
 const Comment = require('../models/comment.model.js');
 const Favourite = require('../models/favourite.model.js');
@@ -18,10 +17,6 @@ router.get('/films',adminVerify, async (req,res)=>{
     try {
         
         const films = await Film.queryAll(FILMS)
-        
-        films.forEach(el => {
-            el.filmLink =  spliter(el.title);
-        });
         res.json(films);      
     } catch (e) {
         res.json(e.message).status(404)
@@ -34,7 +29,7 @@ router.get('/films',adminVerify, async (req,res)=>{
 
 
 
-router.post('/editfilm',adminVerify,async (req,res)=>{
+router.put('/editfilm',adminVerify,async (req,res)=>{
      
     try {
         
@@ -44,7 +39,7 @@ router.post('/editfilm',adminVerify,async (req,res)=>{
         
         if (film.id){
             await Film.updateFilm(title,description,id)
-            return res.status(200).json('Update succesful');
+            return res.status(200).end();
         }
         throw new Error();
         
@@ -72,7 +67,7 @@ router.post('/addfilm',adminVerify, async(req,res)=>{
     
 })
 
-router.post('/deletefilm',adminVerify,async(req,res)=>{
+router.delete('/deletefilm',adminVerify,async(req,res)=>{
 
    
     try {
@@ -83,7 +78,7 @@ router.post('/deletefilm',adminVerify,async(req,res)=>{
             await Comment.delete(COMMENTS,FILM_ID,id);
             await Favourite.delete(FAVOURITES,FILM_ID,id);
             await Rating.delete(RATINGS,FILM_ID,id);
-            res.status(200).json('Delete Succesful')
+            res.status(200).end();
         }
         
     } catch (e) {

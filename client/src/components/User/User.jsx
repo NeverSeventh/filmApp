@@ -9,6 +9,7 @@ const User = () => {
 
     const user = useSelector(state=>state.currentUser);
     const userid = useSelector(state=>state.userid);
+    
     useEffect(()=> {
         if (localStorage.getItem('token')) {
             dispatch(fetchCurrentUser(userid));
@@ -27,7 +28,10 @@ const User = () => {
         <>
         <div className="user">
             {user ?
+            <>
             <div className="user__name">{user.user?.nickname}</div>
+            <div className="user__text">Ваши любимые фильмыЖ</div>
+            </>
             :<></>}
         </div>
         <ul>{filmlist}</ul>
