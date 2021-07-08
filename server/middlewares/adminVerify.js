@@ -5,13 +5,13 @@ const adminVerify = (req,res,next)=> {
     const authHeader = req.headers['authorization'];
     
    
-    if (!authHeader) { req.admin=false; return next()}
+    if (!authHeader) { return res.sendStatus(403)}
     
     jwt.verify(authHeader,'secret',async(err,user)=> {
         
-        if (err)  {req.admin=false;return next() }
+        if (err)  { return res.sendStatus(403) }
         
-        req.admin = user.isAdmin;
+        req.userid = user.userid;
         next();
     })   
     

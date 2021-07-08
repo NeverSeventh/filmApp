@@ -31,8 +31,9 @@ const addToFavouritesActionCreator = (payload) => {
 const fetchAddToFavourites = (userid,filmTitle) => async(dispatch,getState) => {
     const responce = await fetch('http://localhost:6970/film/add',{
         method: 'POST',
-        headers: {'Content-Type': 'application/json;charset=utf-8'},
-        body:JSON.stringify({userid:userid,film:filmTitle})
+        headers: {'Content-Type': 'application/json;charset=utf-8',
+        "Authorization": `${localStorage.getItem('token')}`},
+        body:JSON.stringify({filmTitle})
        });
     const message = await responce.json();
     dispatch(addToFavouritesActionCreator(message));
@@ -56,15 +57,18 @@ const rateFilmActionCreator = (payload) => {
     return{type:RATE_FILM,payload:payload}
 }
 
-const fetchRateFilm = (title,userid,value) => async (dispatch,getState) => {
+const fetchRateFilm = (title,value) => async (dispatch,getState) => {
     const responce = await fetch(`http://localhost:6970/film/${title}`,{
         method: 'POST',
-        headers: {'Content-Type': 'application/json;charset=utf-8'},
-        body:JSON.stringify({userid:userid,title:title, rating:value})
-       });
+        headers: {'Content-Type': 'application/json;charset=utf-8',
+        "Authorization": `${localStorage.getItem('token')}`},
+        body:JSON.stringify({title:title, rating:value})
+       }); 
     
+    if (responce.status === 200) {
+        dispatch(rateFilmActionCreator());
+    }
     
-    dispatch(rateFilmActionCreator());
     
 }
 
@@ -72,11 +76,12 @@ const filmRatingUserActionCreator = (payload) => {
     return {type:FILM_RATING_USER,payload:payload}
 }
 
-const fetchFilmRatingUser = (title,userid) => async (dispatch,getState) => {
+const fetchFilmRatingUser = (title) => async (dispatch,getState) => {
     const responce = await fetch(`http://localhost:6970/film/${title}/rating`,{
         method: 'POST',
-        headers: {'Content-Type': 'application/json;charset=utf-8'},
-        body:JSON.stringify({userid:userid,title:title})
+        headers: {'Content-Type': 'application/json;charset=utf-8',
+        "Authorization": `${localStorage.getItem('token')}`},
+        body:JSON.stringify({title:title})
        });
     if (responce.status ===200) {
         const rating = await responce.json();

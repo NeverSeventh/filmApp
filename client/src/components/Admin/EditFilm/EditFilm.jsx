@@ -32,10 +32,10 @@ const EditFilm = () => {
             const {film} = filmData;
             setEl(<form onSubmit={editFilmHandler}>
                 
-                <textarea name="title"  id={film.id} cols="30" rows="10"   defaultValue={film.title}></textarea>
+                <textarea name="title"  id={film?.id} cols="30" rows="10"   defaultValue={film?.title}></textarea>
                 
                 
-                <textarea name="desc" id="" cols="30" rows="10" defaultValue={film.description}></textarea>
+                <textarea name="desc" id="" cols="30" rows="10" defaultValue={film?.description}></textarea>
                 <button type="submit">Редактировать</button>
     
             </form>)

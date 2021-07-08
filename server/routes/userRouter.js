@@ -8,38 +8,19 @@ const { spliter } = require('../functions/functions.js');
 const createToken = require('../auth/auth.js');
 const config = require('../auth/config.js');
 const authenticateToken = require('../middlewares/tokenVerify.js');
+const UserError = require('../errors/userError.js');
+const UserLoginError = require('../errors/userError.js');
+const AuthError = require('../errors/authError.js');
 
-router.get('/',authenticateToken, async (req,res)=>{
-    const userId=req.session?.user?.id;
-    console.log(req.auth)
 
-    
-    try {
-        const user = await User.query(USERS,ID,userId);
-
-        const favFilms = await Favourite.getAllFavourites(userId);
-        
-        favFilms.forEach(el => {
-            if (el.title) {
-                el.filmLink = spliter(el.title);
-            }
-            
-        });
-        res.json({user, favFilms}).status(200);
-    } catch (error) {
-        res.json(error.message).status(401);
-    }
-
-    
-    
-})
 
 router.post('/',authenticateToken,async(req,res)=> {
-    const {userid} = req.body;
-    console.log(req.auth);
     
-    try {
-        if (!req.auth) throw new Error('Auth check failed')
+   
+    
+    try {    
+        if (!req.auth) throw new AuthError('Auth check failed')
+        const {userid} = req;
         const getUser = await User.query(USERS,ID,userid);
         
         const favFilms = await Favourite.getAllFavourites(userid);
@@ -58,23 +39,25 @@ router.post('/',authenticateToken,async(req,res)=> {
                 nickname:getUser.nickname
             }
             
-            return res.json({user,favFilms});
+            return res.json({user,favFilms}).status(200);
         }
-        return res.json('user not found')
+        throw new UserError('user not found')
     } catch (e) {
+        if (e instanceof AuthError) {
+            return res.json('Please login').status(401);
+        }
       res.json(e.message)  
     }
 
 
 })
 
-router.get('/signup',(req,res)=>{
-  
-})
+
 
 router.post('/signup',async(req,res)=>{
-    const {nickname,email,password} = req.body;
+    
     try {
+        const {nickname,email,password} = req.body;
         if (nickname&&email&&password) {
             const newUser = await User.addUser(email,nickname,password)
             
@@ -85,10 +68,10 @@ router.post('/signup',async(req,res)=>{
             const token = createToken({userid:newUser.id,isAdmin},'secret',config)
             return res.status(200).json({userid:newUser.id,token,isAdmin});
             }else {
-                throw new Error('cannot create user');
+                throw new UserLoginError('cannot create user');
             }
         }else {
-            throw new Error('Every field must be filled')
+            throw new UserLoginError('Every field must be filled')
         }
     }
     catch(e) {
@@ -113,7 +96,7 @@ router.post('/signin',async(req,res)=>{
             return res.status(200).json({userid:user.id,token,isAdmin});
             
         }
-        throw new Error('wrong password or email');
+        throw new UserLoginError('Wrong login or password')
     }
     catch (e) {
         
@@ -121,8 +104,6 @@ router.post('/signin',async(req,res)=>{
     }
 })
 
-router.get('/logout',async (req,res)=>{
 
-})
 
 module.exports = router;

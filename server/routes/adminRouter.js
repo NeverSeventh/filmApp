@@ -2,24 +2,23 @@ const {Router} = require('express');
 const { ID, TITLE, FILM_ID } = require('../constants/columns.js');
 const { FILMS, COMMENTS, FAVOURITES, RATINGS } = require('../constants/tables.js');
 const router = Router();
-const getDb = require('../db.js');
 const NotAdminError = require('../errors/notAdmin.js');
 const { spliter } = require('../functions/functions.js');
 const adminVerify = require('../middlewares/adminVerify.js');
-const authenticateToken = require('../middlewares/tokenVerify.js');
 const Comment = require('../models/comment.model.js');
 const Favourite = require('../models/favourite.model.js');
 const Film = require('../models/film.model.js');
 const Rating = require('../models/rating.model.js');
-const db = getDb.getDb();
+
 
 
 
 router.get('/films',adminVerify, async (req,res)=>{
 
     try {
-        if (!req.admin) throw NotAdminError('Not Admin')
+        
         const films = await Film.queryAll(FILMS)
+        
         films.forEach(el => {
             el.filmLink =  spliter(el.title);
         });
@@ -36,10 +35,11 @@ router.get('/films',adminVerify, async (req,res)=>{
 
 
 router.post('/editfilm',adminVerify,async (req,res)=>{
-    
-    const {id,title,description} =req.body;
+     
     try {
-        if (!req.admin) NotAdminError('Not Admin');
+        
+        
+        const {id,title,description} = req.body;
         const film= await Film.query(FILMS,ID,id);
         
         if (film.id){
@@ -57,9 +57,10 @@ router.post('/editfilm',adminVerify,async (req,res)=>{
 })
 
 router.post('/addfilm',adminVerify, async(req,res)=>{
-    const {title,description} = req.body;
+    
     try {
-        if (!req.admin) throw new NotAdminError('Not Admin')
+        
+        const {title,description} = req.body;
         if (title) {
             const result = await Film.addFilm(title,description);
             return res.status(200).json('Film added succesfuly');
@@ -73,9 +74,10 @@ router.post('/addfilm',adminVerify, async(req,res)=>{
 
 router.post('/deletefilm',adminVerify,async(req,res)=>{
 
-   const {id} = req.body;
+   
     try {
-        if (!req.admin) throw new NotAdminError('Not Admin')
+        
+        const {id} = req.body;
         if (id) {
             await Film.delete(FILMS,ID,id);
             await Comment.delete(COMMENTS,FILM_ID,id);
@@ -85,13 +87,12 @@ router.post('/deletefilm',adminVerify,async(req,res)=>{
         }
         
     } catch (e) {
-        console.log(e.message);
+        
         res.json(e.message);
     }
 })
 
-router.get('/users', (req,res)=>{
-})
+
 
 
 module.exports = router;

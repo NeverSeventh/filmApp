@@ -11,7 +11,7 @@ const Rating = ({value,title,userid}) => {
     
 
     const ratingChanged = (newRating) => {
-        dispatch(fetchRateFilm(title,userid,newRating));
+        dispatch(fetchRateFilm(title,newRating));
     }
     useEffect(()=> {
         const fetchRating = async() => {
@@ -19,7 +19,7 @@ const Rating = ({value,title,userid}) => {
                 method: 'POST',
                 headers: {'Content-Type': 'application/json;charset=utf-8',
                 "Authorization": `${localStorage.getItem('token')}`},
-                body:JSON.stringify({userid:userid,title:title})
+                body:JSON.stringify({title:title})
                });
                
             if (responce.status === 200) {
@@ -42,9 +42,6 @@ const Rating = ({value,title,userid}) => {
     },[])
 
 
-    // const currentRatingHandler = (e) => {
-    //     updateCurrentRating(()=> e)
-    // }
     
     return(
 

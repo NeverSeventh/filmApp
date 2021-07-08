@@ -6,7 +6,7 @@ import "./navbar.scss"
 
 
 const Navbar = () => {
-    const userid = useSelector(state=>state.userid)
+    const userid = useSelector(state=>state.currentUser.user?.id);
     const isAdmin = useSelector(state=>state.isAdmin)
     return(
         <nav className="navbar">

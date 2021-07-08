@@ -7,12 +7,13 @@ import Rating from '../Rating/Rating'
 import CommentForm from "../CommentForm/CommentForm";
 import "./film.scss"
 import { fetchDeleteFilm } from "../../redux/AC/admin";
+import { fetchCurrentUser } from "../../redux/AC/users";
 
 const Film = () => {
     let {title} = useParams();
     
     const currentFilm = useSelector(state=> state.currentFilm);
-    const userid = useSelector(state=>state.userid);
+    const userid = useSelector(state=>state.currentUser.user?.id);
     const isAdmin = useSelector(state=>state.isAdmin)
 
 
@@ -29,19 +30,23 @@ const Film = () => {
     useEffect(()=> {
         
         dispatch(fetchCurrentFilm(title));
+        if (!userid) {
+            dispatch(fetchCurrentUser())
+        }
+        
         if (userid) {
             dispatch(fetchFilmRatingUser(title,userid))
             
         }
         
-  
+        
         
        
     },[]);
 
     const rating = useSelector(state=>state.currentRating);
     
-    const ratingElement = <Rating title={title} value={rating} userid={userid}/>
+    const ratingElement = <Rating title={title} value={rating}/>
 
     
     const addToFavouritesHandler = ()=> {
