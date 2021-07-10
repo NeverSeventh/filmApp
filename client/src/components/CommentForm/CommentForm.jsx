@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux"
 import { fetchAddComment } from "../../redux/AC/films";
-
+import './commentForm.scss'
 
 
 const CommentForm = ({title}) => {
@@ -17,9 +17,9 @@ const CommentForm = ({title}) => {
     }
 
     return (
-        <form onSubmit={addCommentHandler}>
+        <form className='commentForm' onSubmit={addCommentHandler}>
             <input type="text" value={commentText} onChange={e=>setCommentText(e.target.value)} name="comment" />
-            <button type="submit">comment</button>
+            <button type="submit">Оставить комментарий</button>
         </form>
     )
 }

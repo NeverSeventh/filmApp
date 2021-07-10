@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from "react";
 import { useDispatch, useSelector, useStore } from "react-redux";
-import { useParams } from "react-router-dom";
+import { useHistory, useParams } from "react-router-dom";
 import { fetchEditFilm } from "../../../redux/AC/admin";
 import { fetchCurrentFilm } from "../../../redux/AC/films";
 
@@ -14,14 +14,15 @@ const EditFilm = () => {
    // let currentFilm = useSelector(state=> state.currentFilm);
     const dispatch = useDispatch();
 
-    
+    const history = useHistory();
     const [elements,setEl] = useState('');
 
     const editFilmHandler = (e) => {
         e.preventDefault();
         const {title,desc} = e.target;
 
-        dispatch(fetchEditFilm(title.id,title.value,desc.value))
+        dispatch(fetchEditFilm(title.id,title.value,desc.value));
+        history.push(`/film/${title.value}`)
     }
     
     useEffect(()=> {

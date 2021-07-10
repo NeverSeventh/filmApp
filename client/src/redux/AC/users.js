@@ -1,4 +1,5 @@
 import { CURRENT_USER, ERROR, IS_ADMIN, LOGIN, LOGOUT, NO_ERROR, SIGNUP, TOKEN } from "../types"
+import { errorActionCreator, noErrorActionCreator } from "./error"
 
 
 
@@ -22,8 +23,13 @@ const fetchLogin = (email, password) => async(dispatch,getState) => {
     if (responce.status === 200) {
         const userInfo = await responce.json();
         localStorage.setItem('token',`${userInfo.token}`);
-        dispatch(loginActionCreator(userInfo.userid));
         dispatch(isAdminActionCreator(userInfo.isAdmin));
+        dispatch(fetchCurrentUser());
+        dispatch(noErrorActionCreator());
+    }else 
+    if (responce.status ===401) {
+        const errorMesg = await responce.json();
+        dispatch(errorActionCreator(errorMesg));
     }
     
 
@@ -34,19 +40,26 @@ const currentUserActionCreator = (payload) => {
     return {type:CURRENT_USER, payload:payload}
 }
 
+
+
+
+
 const fetchCurrentUser = () => async(dispatch,getState) => {
    const responce = await fetch('http://localhost:6970/user',{
     method: 'GET',
     headers: {'Content-Type': 'application/json;charset=utf-8',
     "Authorization": `${localStorage.getItem('token')}`},
    });
+   
    if (responce.status === 200) {
     const user = await responce.json(); 
     dispatch(currentUserActionCreator(user));
-    dispatch({type:NO_ERROR})
+    dispatch(noErrorActionCreator());
+    
    }else 
    if (responce.status === 401) {
-       dispatch({type:ERROR,payload:'Please login or signup'})
+       dispatch(errorActionCreator('UserError'))
+       localStorage.removeItem('token');
    }
 
 }
@@ -64,9 +77,15 @@ const fetchSignup = (nickname,email,password) => async(dispatch,getState) => {
     if (responce.status === 200) {
         const data = await responce.json();
         localStorage.setItem('token',`${data.token}`);
-        dispatch(signupActionCreator(data.userid));
+        dispatch(fetchCurrentUser());
         dispatch(isAdminActionCreator(data.isAdmin));
+        dispatch(noErrorActionCreator())
+    }else 
+    if (responce.status ===401) {
+        const errorMesg = await responce.json()
+        dispatch(errorActionCreator(errorMesg))
     }
+    
 
 }
 

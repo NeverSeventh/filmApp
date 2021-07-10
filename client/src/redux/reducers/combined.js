@@ -2,6 +2,7 @@ import { combineReducers } from "redux";
 import { ALL_FILMS, LOGIN, LOGOUT, SIGNUP,CURRENT_FILM, CURRENT_USER, ADD_TO_FAVOURITES, ADD_COMMENT, RATE_FILM, FILM_RATING_USER,IS_ADMIN,ERROR,TOKEN, EDIT_FILM,NO_ERROR } from "../types";
 
 const reducer = (state=[],action) => {
+   
     switch(action.type) {
         
         // Film Reducer
@@ -26,10 +27,14 @@ const reducer = (state=[],action) => {
         case ADD_TO_FAVOURITES:
             return state;
         case ADD_COMMENT:
+
             return {
                 ...state,
-                ...state.currentFilm,
-                comments:[...state.currentFilm.comments, action.payload]
+                currentFilm: {
+                    ...state.currentFilm,
+                    comments:[...state.currentFilm.comments, action.payload]
+                }
+                
             }
         case RATE_FILM: 
             return state
@@ -38,17 +43,9 @@ const reducer = (state=[],action) => {
 
         // User Reducer
         case LOGIN:
-            return {
-                ...state,
-                userid:action.payload,
-                
-            } 
+            return state;
+            
         
-        case TOKEN: 
-            return {
-                ...state,
-                authToken:action.payload
-            }
                 
 
         
@@ -60,11 +57,7 @@ const reducer = (state=[],action) => {
             }
 
         case SIGNUP:
-            return {
-                ...state,
-                userid:action.payload,
-                
-            }
+            return state;
 
         case LOGOUT:
             return {
@@ -88,12 +81,12 @@ const reducer = (state=[],action) => {
         case ERROR:
             return {
                 ...state,
-                errorMessg:action.payload,
+                errorMesg:action.payload,
             }
         case NO_ERROR:
             return {
                 ...state,
-                errorMessg:''
+                errorMesg:''
             }
 
         default:

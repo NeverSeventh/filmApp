@@ -10,15 +10,14 @@ import Rating from "../../Rating/Rating"
 const UserFilm = ({userid,film}) => {
    
 
-    
-       
+
     
 
 
     return (
         <>
         <FilmPreview link={'/film/'} film={film}/>
-        {film.rating ? <Rating value={film.rating} title={film.title} userid={userid} /> :<></>}
+        { <Rating  title={film.title}/>}
         </>
     )
 }

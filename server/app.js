@@ -6,6 +6,7 @@ const userRouter = require('./routes/userRouter');
 const filmRouter = require('./routes/filmRouter');
 const adminRouter = require('./routes/adminRouter');
 const cors = require('cors');
+const authenticateToken = require('./middlewares/tokenVerify');
 
 
 
@@ -21,7 +22,7 @@ app.use(express.json());
 
 
 app.use(logger('dev'));
-
+app.use(authenticateToken)
 
 
 

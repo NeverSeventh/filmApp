@@ -6,11 +6,11 @@ const authenticateToken = (req,res,next)=> {
     const authHeader = req.headers['authorization'];
     
    
-    if (!authHeader) { req.auth=false; return next()}
+    if (!authHeader) {return next()}
     
     jwt.verify(authHeader,'secret',(err,user)=> {
         
-        if (err)  {req.auth=false;return next() }
+        if (err)  {return next() }
         
         req.auth = true;
         req.userid = user.userid;

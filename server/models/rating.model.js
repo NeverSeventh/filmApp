@@ -7,12 +7,14 @@ class Rating extends ActiveRecordEntitiy {
         try {
             const check = await db.query('SELECT * FROM ratings WHERE user_id=? and film_id=?',[userId,filmId]);
             if(check.length ===0) {
-                const res = await db.query('INSERT INTO ratings(user_id,film_id,rating) values(?,?,?)',[userId,filmId,rating])
+                const res = await db.query('INSERT INTO ratings(user_id,film_id,rating) values(?,?,?)',[userId,filmId,rating]);
+                return res;  
             }else {
-                const res = await db.query('UPDATE ratings SET rating=? WHERE user_id=? and film_id=?',[rating,userId,filmId])
+                const res = await db.query('UPDATE ratings SET rating=? WHERE user_id=? and film_id=?',[rating,userId,filmId]);
+                return res;  
             }
-            console.log(res);
-            return res;  
+            
+         
         } catch (e) {
             return e.message
         }

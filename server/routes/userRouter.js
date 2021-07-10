@@ -14,7 +14,7 @@ const bcrypt = require('bcrypt');
 const saltRounds = 1;
 
 
-router.get('/',authenticateToken,async(req,res)=> {
+router.get('/',async(req,res)=> {
        
     try {    
         if (!req.auth) throw new AuthError('Auth check failed')
@@ -28,7 +28,8 @@ router.get('/',authenticateToken,async(req,res)=> {
             const user = {
                 id:getUser.id,
                 email:getUser.email,
-                nickname:getUser.nickname
+                nickname:getUser.nickname,
+                role:getUser.role
             }
             
             return res.json({user,favFilms}).status(200);
@@ -36,7 +37,7 @@ router.get('/',authenticateToken,async(req,res)=> {
         throw new UserError('user not found')
     } catch (e) {
         if (e instanceof AuthError) {
-            return res.json('Please login').status(401);
+            return res.status(401).json('Please login');
         }
       res.json(e.message)  
     }
@@ -62,14 +63,16 @@ router.post('/signup',async(req,res)=>{
             const token = createToken({userid:newUser.id,isAdmin},'secret',config)
             return res.status(200).json({userid:newUser.id,token,isAdmin});
             }else {
-                throw new UserLoginError('cannot create user');
+                throw new UserLoginError('Cannot create user. Email/nickname already exists');
             }
         }else {
             throw new UserLoginError('Every field must be filled')
         }
     }
     catch(e) {
-        console.log(e.message);
+        if (e instanceof UserLoginError) {
+            return res.status(401).json(e.message)
+        }
         res.json(e.message).status(501);
     }
 })
@@ -77,8 +80,10 @@ router.post('/signup',async(req,res)=>{
 
 router.post('/signin',async(req,res)=>{
     try{
-        const {email,password} = req.body
+        const {email,password} = req.body;
+        if (!email || !password) throw new UserLoginError('Every field must be filled')
         const user = await User.query(USERS,EMAIL,email);
+        if (!user) throw new UserLoginError('Wrong login or password')
         const compare = await bcrypt.compare(password,user.password)
         if(compare) {
 
@@ -91,8 +96,11 @@ router.post('/signin',async(req,res)=>{
         throw new UserLoginError('Wrong login or password')
     }
     catch (e) {
+        if (e instanceof UserLoginError) {
+            return res.status(401).json(e.message);
+        }
         
-        res.status(404).json(e.message);
+       return res.status(404).json(e.message);
     }
 })
 

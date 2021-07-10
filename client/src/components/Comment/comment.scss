@@ -4,13 +4,13 @@
   width: 800px;
 
   &__nickname {
-    padding: 15px 0 15px 5px;
+    padding: 15px 0 15px 15px;
     border-bottom: 1px solid #000;
-    font-size: 16px;
+    font-size: 24px;
   }
 
   &__text {
     padding: 15px;
-    font-size: 24px;
+    font-size: 36px;
   }
 }

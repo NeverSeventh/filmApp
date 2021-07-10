@@ -1,5 +1,7 @@
-import { useSelector } from "react-redux";
+import { useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { NavLink } from "react-router-dom";
+import { fetchCurrentUser } from "../../redux/AC/users";
 import Logout from "../Logout/Logout";
 import "./navbar.scss"
 
@@ -7,7 +9,19 @@ import "./navbar.scss"
 
 const Navbar = () => {
     const userid = useSelector(state=>state.currentUser.user?.id);
-    const isAdmin = useSelector(state=>state.isAdmin)
+    const role = useSelector(state=>state.currentUser.user?.role)
+    const dispatch = useDispatch();
+    let isAdmin;
+    if (role === 'admin') {
+        isAdmin=true;
+    }
+    
+    useEffect(()=> {
+        if (localStorage.getItem('token') && !userid) {
+            dispatch(fetchCurrentUser());
+        }   
+    },[]);
+
     return(
         <nav className="navbar">
             <ul className="navbar__list">
@@ -20,7 +34,8 @@ const Navbar = () => {
                 {userid ? <>
                     <li className="navbar__item">
                     <Logout/>
-                    </li></>          :
+                    </li></>
+                    :
                     <>
                     <li className="navbar__item">
                         <NavLink to="/login">login</NavLink>

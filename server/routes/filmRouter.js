@@ -24,7 +24,7 @@ router.get('/all',async (req,res)=>{
     
 });
 
-router.post('/add',authenticateToken, async(req,res)=>{
+router.post('/add', async(req,res)=>{
 
     try {
         const {userid} = req;
@@ -39,7 +39,7 @@ router.post('/add',authenticateToken, async(req,res)=>{
             
             if (user && film) {
                 
-                const res = await Favourite.addFavourite(user.id,film.id);
+                const responce = await Favourite.favouriteControl(user.id,film.id);
                 return res.status(200).json({message:'film added'})
             }
         }
@@ -48,7 +48,7 @@ router.post('/add',authenticateToken, async(req,res)=>{
         throw new Error();
     }
     catch(e) {
-        
+        console.log(e.message)
         res.json(e.message).status(501);
     }
 })
@@ -59,8 +59,12 @@ router.get('/:title', async(req,res)=>{
         const {title}=req.params;
        
         const film = await Film.query(FILMS,TITLE,title);
-
+        
         if (film) {
+            if (req.userid) {
+            
+                film.inFavourite = await Favourite.checkFavourite(req.userid,film.id)
+            }
             const comments = await Comment.findAllCommentsByFilm(film.id);
             
             
@@ -75,21 +79,29 @@ router.get('/:title', async(req,res)=>{
 })
 
 
-router.post('/:title',authenticateToken,async(req,res)=> {
+router.post('/:title',async(req,res)=> {
     try {
-        
+        const {userid} = req;
+        if (!userid) throw new AuthError();
 
         const {title,commentText} = req.body
         
         const film = await Film.query(FILMS,TITLE,title);
-        const {userid} = req;
-        if (!userid) throw new AuthError();
+
 
 
         if (film&&commentText) {
 
-                comment = await Comment.addComment(userid,film.id,commentText);
-                return res.json(comment).status(200);
+                responce = await Comment.addComment(userid,film.id,commentText);
+                if (responce) {
+                    const comment = {
+                        id:responce.id,
+                        text:responce.text,
+                        nickname:responce.nickname
+                    }
+                    return res.json(comment).status(200);
+                }
+
             
     
         }
@@ -103,7 +115,7 @@ router.post('/:title',authenticateToken,async(req,res)=> {
     }
 })
 
-router.put('/:title/rating', authenticateToken, async(req,res) => {
+router.put('/:title/rating', async(req,res) => {
     try {
         const rating = parseInt(req.body.rating);
         const {title} = req.body;
@@ -123,7 +135,7 @@ router.put('/:title/rating', authenticateToken, async(req,res) => {
     }
 })
 
-router.post('/:title/rating', authenticateToken,async(req,res) => {
+router.post('/:title/rating',async(req,res) => {
     try {
     const {title} = req.body;
     

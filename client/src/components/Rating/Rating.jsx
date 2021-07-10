@@ -3,7 +3,7 @@ import ReactStarts from 'react-rating-stars-component';
 import { useDispatch, useSelector} from "react-redux";
 
 import { fetchFilmRatingUser, fetchRateFilm } from '../../redux/AC/films';
-const Rating = ({value,title,userid}) => {
+const Rating = ({title}) => {
 
     const dispatch = useDispatch();
     
@@ -23,7 +23,8 @@ const Rating = ({value,title,userid}) => {
                });
                
             if (responce.status === 200) {
-                const rating = await responce.json();
+                let rating = await responce.json();
+                
                 setRatingElement(<ReactStarts
                     value={rating}
                     count={5}

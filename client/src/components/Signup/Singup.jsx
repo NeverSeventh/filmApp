@@ -1,5 +1,6 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import { fetchSignup } from "../../redux/AC/users";
 import './signup.scss'
 
@@ -9,9 +10,9 @@ const Signup = () => {
 
     const dispatch = useDispatch();
 
-
-    const message = useSelector(state=>state.signup);
-
+    const history = useHistory();
+    const error = useSelector(state=>state.errorMesg);
+    const {user} = useSelector(state=>state.currentUser); 
     const signUpHandler = (e)=> {
         e.preventDefault();
         const {nickname,email,password} = e.target;
@@ -22,10 +23,13 @@ const Signup = () => {
         
     },[]);
 
-   
+    if (user) {
+        history.push('/user');
+    }
 
     return(
-
+        <>
+        {error ?<><div className="error__message">{error}</div></>:<></>}
         <form onSubmit={signUpHandler} className="signup">
             <div className="signup__item">
             <label htmlFor="nickname">Ваш ник</label>
@@ -43,6 +47,7 @@ const Signup = () => {
 
             <button className="signup__btn btn" type="submit">Зарегистрироваться</button>
         </form>
+        </>
     )
 }
 
