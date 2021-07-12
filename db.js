@@ -13,7 +13,7 @@ const config = {
 class Database {
     constructor(config) {
         try {
-            this.connection = mysql.createConnection(config);
+            this.connection = mysql.createPool(config);
         } catch (error) {
             console.log(error.message);
         }
