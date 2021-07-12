@@ -3,10 +3,10 @@ let db;
 
 const config = {
     connectionLimit:5,
-    host:'localhost',
-    user:'root',
-    database:'filmdb',
-    password:'root'
+    host:'us-cdbr-east-04.cleardb.com',
+    user:'be759472b98dfa',
+    database:'heroku_8bafe6a62d223f1',
+    password:'f143f15b'
 }
 
 
