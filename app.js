@@ -44,6 +44,6 @@ app.get('/',(req,res)=>{
     
 })
 
-app.listen('https://filmappserver.herokuapp.com/',()=>{
+app.listen(process.env.PORT || 6970,()=>{
     console.log('Server Started');
 });
