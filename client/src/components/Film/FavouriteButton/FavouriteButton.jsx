@@ -1,14 +1,11 @@
-import { useEffect, useState } from "react";
+
 
 
 
 
 const FavouriteButton = ({addToFavourites,inFavourites}) => {
 
-   // let inFavourites = favFilms?.find(el=> el.id === film?.id)
-    useEffect (()=> {
-        
-    },[])
+
 
 
     const favouriteButtonHandler = () => {

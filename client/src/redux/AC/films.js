@@ -1,5 +1,5 @@
 import { ADD_COMMENT, ADD_TO_FAVOURITES, ALL_FILMS,CURRENT_FILM, FILM_RATING_USER, RATE_FILM  } from "../types"
-import { useHistory } from "react-router"
+import { noErrorActionCreator } from "./error";
 
 const allFilmsActionCreator = (payload) => {
     return {type:ALL_FILMS, payload:payload}
@@ -8,8 +8,12 @@ const allFilmsActionCreator = (payload) => {
 const fetchAllFilms = () => async(dispatch,getState) => {
     const responce = await fetch("http://localhost:6970/film/all");
     const films = await responce.json();
-   
+   if(responce.status ===200) {
     dispatch(allFilmsActionCreator(films));
+    dispatch(noErrorActionCreator())
+   }
+
+    
 }
 
 const currentFilmActionCreator = (payload) => {
@@ -21,11 +25,15 @@ const fetchCurrentFilm = (title) => async(dispatch,getState) => {
         method:'GET',
         headers:{"Authorization": `${localStorage.getItem('token')}`}
     });
-    const film = await responce.json();
+
+    if(responce.status===200) {
+        const film = await responce.json();
 
     
     
-    dispatch(currentFilmActionCreator(film));
+        dispatch(currentFilmActionCreator(film));
+    }
+
 }
 
 const addToFavouritesActionCreator = (payload) => {
@@ -39,8 +47,13 @@ const fetchAddToFavourites = (filmTitle) => async(dispatch,getState) => {
         "Authorization": `${localStorage.getItem('token')}`},
         body:JSON.stringify({filmTitle})
        });
+
+       if(responce.status===200) {
+       
     const message = await responce.json();
     dispatch(addToFavouritesActionCreator(message));
+    }
+
 
 }
 

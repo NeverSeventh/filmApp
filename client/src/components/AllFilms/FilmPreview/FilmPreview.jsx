@@ -1,5 +1,8 @@
 import { NavLink } from 'react-router-dom';
 import './filmPreview.scss'
+
+
+
 const FilmPreview = ({film,link}) => {
     
     if (film.description?.length >300) {

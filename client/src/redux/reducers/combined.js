@@ -1,4 +1,4 @@
-import { combineReducers } from "redux";
+
 import { ALL_FILMS, LOGIN, LOGOUT, SIGNUP,CURRENT_FILM, CURRENT_USER, ADD_TO_FAVOURITES, ADD_COMMENT, RATE_FILM, FILM_RATING_USER,IS_ADMIN,ERROR,TOKEN, EDIT_FILM,NO_ERROR } from "../types";
 
 const reducer = (state=[],action) => {

@@ -6,20 +6,20 @@ const AdminFilms = () => {
 
    const films = useSelector(state=>state.films);
     
+
+   
    const dispatch = useDispatch();
-   
-   
    
    useEffect(()=> {
        dispatch(fetchAllFilms());
    },[]) 
 
    const filmsLinks = films?.map(el=> {
-      return <li> <FilmPreview film={el} link = "/admin/"></FilmPreview></li>
+      return <li key={el.id}> <FilmPreview film={el} link = "/admin/"></FilmPreview></li>
   })
 
    return (
-   <ul>
+   <ul className="admin__list">
       {filmsLinks}
    </ul>
    )

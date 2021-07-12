@@ -6,7 +6,6 @@ const { USERS } = require('../constants/tables.js');
 const { ID, EMAIL } = require('../constants/columns.js');
 const createToken = require('../auth/auth.js');
 const config = require('../auth/config.js');
-const authenticateToken = require('../middlewares/tokenVerify.js');
 const UserError = require('../errors/userError.js');
 const UserLoginError = require('../errors/userError.js');
 const AuthError = require('../errors/authError.js');
@@ -73,7 +72,7 @@ router.post('/signup',async(req,res)=>{
         if (e instanceof UserLoginError) {
             return res.status(401).json(e.message)
         }
-        res.json(e.message).status(501);
+        res.status(501).json(e.message);
     }
 })
 

@@ -1,14 +1,18 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink, useHistory } from "react-router-dom";
+import { useHistory } from "react-router-dom";
+import { noErrorActionCreator } from "../../redux/AC/error";
 import { fetchCurrentUser } from "../../redux/AC/users";
 import UserFilm from "./UserFilm/UserFilm";
+
 const User = () => {
     const history = useHistory();
     const dispatch =useDispatch();
     
     const currentUser = useSelector(state=>state.currentUser);
+    
     const {user} = currentUser;
+
     const userError = useSelector(state=>state.errorMesg);
     
     useEffect(()=> {
@@ -20,14 +24,16 @@ const User = () => {
 
     if (!localStorage.getItem('token')) {
        history.push('/login');
+       
     }
     
     if (userError === 'UserError') {
         history.push('/login');
+        dispatch(noErrorActionCreator());
     }
 
     const filmlist = currentUser?.favFilms?.map(el=>{
-        return <li><UserFilm film={el} userid={user?.id}/></li>
+        return <li  key={el.id} ><UserFilm film={el}/></li>
     })
 
     return(

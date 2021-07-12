@@ -7,7 +7,6 @@ const Rating = require('../models/rating.model.js');
 const Comment = require('../models/comment.model.js');
 const { FILMS, USERS } = require('../constants/tables.js');
 const { ID, TITLE } = require('../constants/columns.js');
-const authenticateToken = require('../middlewares/tokenVerify.js');
 const AuthError = require('../errors/authError.js');
 
 

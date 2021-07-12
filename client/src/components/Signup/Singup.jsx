@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { noErrorActionCreator } from "../../redux/AC/error";
 import { fetchSignup } from "../../redux/AC/users";
 import './signup.scss'
 
@@ -11,8 +12,11 @@ const Signup = () => {
     const dispatch = useDispatch();
 
     const history = useHistory();
+
     const error = useSelector(state=>state.errorMesg);
+
     const {user} = useSelector(state=>state.currentUser); 
+
     const signUpHandler = (e)=> {
         e.preventDefault();
         const {nickname,email,password} = e.target;
@@ -20,10 +24,10 @@ const Signup = () => {
     }
 
     useEffect(()=> {
-        
+        dispatch(noErrorActionCreator());
     },[]);
 
-    if (user) {
+    if (user && localStorage.getItem('token')) {
         history.push('/user');
     }
 

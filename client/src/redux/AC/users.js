@@ -1,4 +1,4 @@
-import { CURRENT_USER, ERROR, IS_ADMIN, LOGIN, LOGOUT, NO_ERROR, SIGNUP, TOKEN } from "../types"
+import { CURRENT_USER, IS_ADMIN, LOGIN, LOGOUT, SIGNUP, } from "../types"
 import { errorActionCreator, noErrorActionCreator } from "./error"
 
 

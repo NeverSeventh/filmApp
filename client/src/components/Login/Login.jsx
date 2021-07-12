@@ -1,19 +1,29 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
+import { noErrorActionCreator } from "../../redux/AC/error";
 import { fetchLogin } from "../../redux/AC/users";
 import './login.scss';
 
 const Login = () => {
 
     const dispatch = useDispatch();
+
     const history = useHistory();
+
     const error = useSelector(state=> state.errorMesg);
+
     const {user} = useSelector(state=>state.currentUser);
+
     const loginHandler = (e) => {
         e.preventDefault();
          dispatch(fetchLogin(e.target.email.value,e.target.password.value))
     }
+    
+
+    useEffect(()=> {
+        dispatch(noErrorActionCreator());
+    },[]);
 
     if (user) {
         history.push('/user');
@@ -23,6 +33,7 @@ const Login = () => {
     return (
         <>
         {error ? <><div className="error__message">{error}</div></>:<></>}
+
         <form className="login"  onSubmit={loginHandler}>
             <div className="login__item">
                 <label htmlFor="email">Email</label>

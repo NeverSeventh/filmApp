@@ -9,9 +9,13 @@ import "./navbar.scss"
 
 const Navbar = () => {
     const userid = useSelector(state=>state.currentUser.user?.id);
-    const role = useSelector(state=>state.currentUser.user?.role)
+    
+    const role = useSelector(state=>state.currentUser.user?.role);
+
     const dispatch = useDispatch();
+
     let isAdmin;
+
     if (role === 'admin') {
         isAdmin=true;
     }

@@ -1,8 +1,7 @@
-import React, { useEffect, useRef, useState } from "react";
-import { useDispatch, useSelector, useStore } from "react-redux";
+import React, { useEffect, useState } from "react";
+import { useDispatch} from "react-redux";
 import { useHistory, useParams } from "react-router-dom";
 import { fetchEditFilm } from "../../../redux/AC/admin";
-import { fetchCurrentFilm } from "../../../redux/AC/films";
 
 
 
@@ -11,7 +10,7 @@ const EditFilm = () => {
 
     let {title} = useParams();
 
-   // let currentFilm = useSelector(state=> state.currentFilm);
+   
     const dispatch = useDispatch();
 
     const history = useHistory();
@@ -55,14 +54,6 @@ const EditFilm = () => {
         <>
          {elements}</>
        
-        // <form onSubmit={editFilmHandlet}>
-        //     <h1 className="currentFilm__title">{currentFilm?.film?.title}</h1>
-        //     <textarea name=""  id="input" cols="30" rows="10"   defaultValue={currentFilm?.film?.title}></textarea>
-            
-            
-        //     <textarea name="" id="" cols="30" rows="10" defaultValue={currentFilm?.film?.description}></textarea>
-        //     <button type="submit">Редактировать</button>
-        // </form>
     )
 }
 

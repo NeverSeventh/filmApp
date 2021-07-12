@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 import ReactStarts from 'react-rating-stars-component';
-import { useDispatch, useSelector} from "react-redux";
+import { useDispatch} from "react-redux";
 
-import { fetchFilmRatingUser, fetchRateFilm } from '../../redux/AC/films';
+import {fetchRateFilm } from '../../redux/AC/films';
 const Rating = ({title}) => {
 
     const dispatch = useDispatch();

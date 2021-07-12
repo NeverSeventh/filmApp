@@ -10,7 +10,6 @@ import AdminFilms from "./components/Admin/AdminFilms/AdminFilms";
 import './app.scss';
 import EditFilm from "./components/Admin/EditFilm/EditFilm";
 import AddFilm from "./components/Admin/AddFilm/AddFilm";
-import Logout from "./components/Logout/Logout";
 
 const App = () =>{
   return (

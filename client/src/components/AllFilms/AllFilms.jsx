@@ -17,7 +17,7 @@ const AllFilms = () => {
     },[]) 
     
     const filmsLinks = films?.map(el=> {
-        return <li> <FilmPreview film={el} link = "/film/"></FilmPreview></li>
+        return <li key={el.id}> <FilmPreview film={el} link = "/film/"></FilmPreview></li>
     })
     
 

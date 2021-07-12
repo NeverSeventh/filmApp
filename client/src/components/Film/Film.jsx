@@ -1,4 +1,4 @@
-import { useEffect,useState } from "react";
+import { useEffect} from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useParams } from "react-router"
 import { fetchAddToFavourites, fetchCurrentFilm,fetchFilmRatingUser } from "../../redux/AC/films";
@@ -17,15 +17,17 @@ const Film = () => {
     const currentUser = useSelector(state=>state.currentUser);
     const {user} = currentUser;
     const history = useHistory();
-    const isAdmin = useSelector(state=>state.isAdmin);
-    const rating = useSelector(state=>state.currentRating);
     const {film} = currentFilm;
-    
+    let isAdmin;
+
+    if (user?.role==='admin') {
+        isAdmin=true;
+    }
     
     const dispatch = useDispatch();
 
     const comments = currentFilm?.comments?.map(el => {
-        return <Comment  comment={el}/>
+        return <Comment key={el.id} comment={el}/>
     })
     
 
@@ -39,10 +41,6 @@ const Film = () => {
             dispatch(fetchCurrentUser());
         }
         
-        if (user?.id) {
-            dispatch(fetchFilmRatingUser(title))
-            
-        }
 
         
         
@@ -52,7 +50,7 @@ const Film = () => {
     
     
     
-    const ratingElement = <Rating title={title} value={rating}/>
+    const ratingElement = <Rating title={title}/>
 
     
     const addToFavouritesHandler = ()=> {
@@ -81,7 +79,7 @@ const Film = () => {
         
         {user?.id ? <><FavouriteButton addToFavourites={addToFavouritesHandler} inFavourites={film?.inFavourite}/></> :<></> }
         {user?.id ?ratingElement :<></>}
-        {isAdmin ?<button  onClick={deleteHandler}>Удалить фильм</button> : <></>}
+        {isAdmin ?<button className="btn__delete" onClick={deleteHandler}>Удалить фильм</button> : <></>}
         <div className="comments">
             <h2>Comments</h2>
             {comments}

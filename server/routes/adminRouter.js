@@ -1,8 +1,7 @@
 const {Router} = require('express');
-const { ID, TITLE, FILM_ID } = require('../constants/columns.js');
+const { ID, FILM_ID } = require('../constants/columns.js');
 const { FILMS, COMMENTS, FAVOURITES, RATINGS } = require('../constants/tables.js');
 const router = Router();
-const NotAdminError = require('../errors/notAdmin.js');
 const adminVerify = require('../middlewares/adminVerify.js');
 const Comment = require('../models/comment.model.js');
 const Favourite = require('../models/favourite.model.js');
