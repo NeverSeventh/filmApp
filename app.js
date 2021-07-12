@@ -41,7 +41,7 @@ app.use('/film', filmRouter);
 app.use('/admin',adminRouter);
 
 app.get('/',(req,res)=>{
-    
+    res.send('<p>Hello world</p>')
 })
 
 app.listen(process.env.PORT || 6970,()=>{
