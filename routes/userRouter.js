@@ -59,7 +59,7 @@ router.post('/signup',async(req,res)=>{
 
             let isAdmin = false;
             if (newUser.role ==='admin')  isAdmin=true;
-            const token = createToken({userid:newUser.id,isAdmin},'secret',config)
+            const token =  createToken({userid:newUser.id,isAdmin},'secret',config)
             return res.status(200).json({userid:newUser.id,token,isAdmin});
             }else {
                 throw new UserLoginError('Cannot create user. Email/nickname already exists');
@@ -80,10 +80,14 @@ router.post('/signup',async(req,res)=>{
 router.post('/signin',async(req,res)=>{
     try{
         const {email,password} = req.body;
+        console.log(email,password);
         if (!email || !password) throw new UserLoginError('Every field must be filled')
         const user = await User.query(USERS,EMAIL,email);
-        if (!user) throw new UserLoginError('Wrong login or password')
-        const compare = await bcrypt.compare(password,user.password)
+        console.log(user)
+        if (!user) throw new UserLoginError('Wrong login or password');
+
+        const compare = await bcrypt.compare(password,user.password);
+        console.log(compare)
         if(compare) {
 
             let isAdmin = false;
