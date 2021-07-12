@@ -80,14 +80,14 @@ router.post('/signup',async(req,res)=>{
 router.post('/signin',async(req,res)=>{
     try{
         const {email,password} = req.body;
-        console.log(email,password);
+        
         if (!email || !password) throw new UserLoginError('Every field must be filled')
         const user = await User.query(USERS,EMAIL,email);
-        console.log(user)
+        
         if (!user) throw new UserLoginError('Wrong login or password');
 
         const compare = await bcrypt.compare(password,user.password);
-        console.log(compare)
+        
         if(compare) {
 
             let isAdmin = false;

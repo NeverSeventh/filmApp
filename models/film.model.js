@@ -9,8 +9,8 @@ class Film extends ActiveRecordEntitiy {
         const res = await db.query('UPDATE films set title=?, description=? where id=?',[title,description,id]);
     }
     
-    static async addFilm(title,description,img='') {
-        const res = await db.query('INSERT INTO films (title,description,img) VALUES (?,?,?)',[title,description,img])
+    static async addFilm(title,description) {
+        const res = await db.query('INSERT INTO films (title,description,img) VALUES (?,?)',[title,description])
         return res;
     }
 

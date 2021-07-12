@@ -56,6 +56,7 @@ router.post('/addfilm',adminVerify, async(req,res)=>{
         
         const {title,description} = req.body;
         if (title) {
+            
             const result = await Film.addFilm(title,description);
             return res.status(200).json('Film added succesfuly');
         }
