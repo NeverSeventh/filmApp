@@ -10,7 +10,7 @@ class Film extends ActiveRecordEntitiy {
     }
     
     static async addFilm(title,description) {
-        const res = await db.query('INSERT INTO films (title,description,img) VALUES (?,?)',[title,description])
+        const res = await db.query('INSERT INTO films (title,description) VALUES (?,?)',[title,description])
         return res;
     }
 
