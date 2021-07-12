@@ -1,0 +1,17 @@
+.admin {
+  &__block {
+    width: 503px;
+    margin-bottom: 25px;
+  }
+  &__title {
+    padding: 15px 0;
+    padding-left: 15px;
+    width: 100%;
+    font-size: 36px;
+  }
+  &__desc {
+    padding: 15px 0;
+    padding-left: 15px;
+    font-size: 24px;
+  }
+}

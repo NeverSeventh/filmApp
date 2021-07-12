@@ -1,7 +1,7 @@
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import { fetchAddFilm } from "../../../redux/AC/admin";
-
+import '../admin.scss'; 
 
 
 
@@ -19,10 +19,14 @@ const AddFilm = () => {
 
     return (
         <form className='admin__form' onSubmit={addFilmHandler}>
-                <input type="text" name="title"  />
-                <textarea name="desc" id="" cols="30" rows="10"></textarea>
-                <button type="submit">Добавить фильм</button>
-            
+            <div className="admin__block">
+            <input className="admin__title" type="text" name="title"  />
+            </div>
+                
+                <textarea name="desc" id="" className="admin__desc" cols="50" rows="10"></textarea>
+                <div className="admin__block">
+                <button type="submit" className="btn">Добавить фильм</button>
+                </div>
         </form>
     )
 }

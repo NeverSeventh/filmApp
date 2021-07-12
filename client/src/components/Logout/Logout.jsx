@@ -1,6 +1,6 @@
 import { useDispatch } from "react-redux";
 import { logoutActionCreator } from "../../redux/AC/users";
-
+import './logout.scss';
 
 
 
@@ -13,7 +13,7 @@ const Logout = () => {
     }
 
     return (
-        <button className="logout__btn" onClick={logoutHandler}>Logout</button>
+        <div className="logout__btn" onClick={logoutHandler}>Logout</div>
     )
 }
 

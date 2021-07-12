@@ -4,7 +4,7 @@ import { useHistory } from "react-router-dom";
 import { noErrorActionCreator } from "../../redux/AC/error";
 import { fetchCurrentUser } from "../../redux/AC/users";
 import UserFilm from "./UserFilm/UserFilm";
-
+import './user.scss'
 const User = () => {
     const history = useHistory();
     const dispatch =useDispatch();
@@ -42,7 +42,7 @@ const User = () => {
             {user ?
             <>
             <div className="user__name">{user?.nickname}</div>
-            <div className="user__text">Ваши любимые фильмы</div>
+            <div className="user__text">Ваши любимые фильмы:</div>
             </>
             :<></>}
         </div>
