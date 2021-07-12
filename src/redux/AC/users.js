@@ -14,7 +14,7 @@ const isAdminActionCreator = (payload) => {
 
 
 const fetchLogin = (email, password) => async(dispatch,getState) => {
-    const responce = await fetch("http://localhost:6970/user/signin",{
+    const responce = await fetch("https://filmappserver.herokuapp.com/user/signin",{
         method: 'POST',
         headers: {'Content-Type': 'application/json;charset=utf-8'},
         body:JSON.stringify({email:email, password:password})
@@ -45,7 +45,7 @@ const currentUserActionCreator = (payload) => {
 
 
 const fetchCurrentUser = () => async(dispatch,getState) => {
-   const responce = await fetch('http://localhost:6970/user',{
+   const responce = await fetch('https://filmappserver.herokuapp.com/user',{
     method: 'GET',
     headers: {'Content-Type': 'application/json;charset=utf-8',
     "Authorization": `${localStorage.getItem('token')}`},
@@ -69,7 +69,7 @@ const signupActionCreator = (payload) => {
 }
 
 const fetchSignup = (nickname,email,password) => async(dispatch,getState) => {
-    const responce = await fetch("http://localhost:6970/user/signup",{
+    const responce = await fetch("https://filmappserver.herokuapp.com/user/signup",{
         method: 'POST',
         headers: {'Content-Type': 'application/json;charset=utf-8'},
         body:JSON.stringify({email:email, password:password,nickname:nickname})

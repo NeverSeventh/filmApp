@@ -6,7 +6,7 @@ import { noErrorActionCreator } from "./error";
 
 
 const fetchEditFilm = (id,title,description) => async(dispatch,getState) => {
-    const responce = await fetch('http://localhost:6970/admin/editFilm',{
+    const responce = await fetch('https://filmappserver.herokuapp.com/admin/editFilm',{
         method: 'PUT',
         headers: {'Content-Type': 'application/json;charset=utf-8',
         "Authorization": `${localStorage.getItem('token')}`},
@@ -18,7 +18,7 @@ const fetchEditFilm = (id,title,description) => async(dispatch,getState) => {
 }
 
 const fetchAddFilm = (title,description) => async(dispatch,getState) => {
-    const responce = await fetch('http://localhost:6970/admin/addFilm',{
+    const responce = await fetch('https://filmappserver.herokuapp.com/admin/addFilm',{
         method: 'POST',
         headers: {'Content-Type': 'application/json;charset=utf-8',
         "Authorization": `${localStorage.getItem('token')}`},
@@ -30,7 +30,7 @@ const fetchAddFilm = (title,description) => async(dispatch,getState) => {
 }
 
 const fetchDeleteFilm = (id) => async(dispatch,getState) => {
-    const responce = await fetch('http://localhost:6970/admin/deleteFilm', {
+    const responce = await fetch('https://filmappserver.herokuapp.com/admin/deleteFilm', {
         method:'DELETE',
         headers: {'Content-type':'application/json;charset=utf-8',
         "Authorization": `${localStorage.getItem('token')}`},

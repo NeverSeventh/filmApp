@@ -15,7 +15,7 @@ const Rating = ({title}) => {
     }
     useEffect(()=> {
         const fetchRating = async() => {
-            const responce = await fetch(`http://localhost:6970/film/${title}/rating`,{
+            const responce = await fetch(`https://filmappserver.herokuapp.com/film/${title}/rating`,{
                 method: 'POST',
                 headers: {'Content-Type': 'application/json;charset=utf-8',
                 "Authorization": `${localStorage.getItem('token')}`},

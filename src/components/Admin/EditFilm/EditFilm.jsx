@@ -26,7 +26,7 @@ const EditFilm = () => {
     
     useEffect(()=> {
         const fetchFilm = async() => {
-            const responce = await fetch(`http://localhost:6970/film/${title}`);
+            const responce = await fetch(`https://filmappserver.herokuapp.com/film/${title}`);
             const filmData = await responce.json();
             
             const {film} = filmData;

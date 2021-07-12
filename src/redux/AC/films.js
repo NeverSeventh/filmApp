@@ -6,7 +6,7 @@ const allFilmsActionCreator = (payload) => {
 }
 
 const fetchAllFilms = () => async(dispatch,getState) => {
-    const responce = await fetch("http://localhost:6970/film/all");
+    const responce = await fetch("https://filmappserver.herokuapp.com/film/all");
     const films = await responce.json();
    if(responce.status ===200) {
     dispatch(allFilmsActionCreator(films));
@@ -21,7 +21,7 @@ const currentFilmActionCreator = (payload) => {
 }
 
 const fetchCurrentFilm = (title) => async(dispatch,getState) => {
-    const responce = await fetch(`http://localhost:6970/film/${title}`, {
+    const responce = await fetch(`https://filmappserver.herokuapp.com/film/${title}`, {
         method:'GET',
         headers:{"Authorization": `${localStorage.getItem('token')}`}
     });
@@ -41,7 +41,7 @@ const addToFavouritesActionCreator = (payload) => {
 }
 
 const fetchAddToFavourites = (filmTitle) => async(dispatch,getState) => {
-    const responce = await fetch('http://localhost:6970/film/add',{
+    const responce = await fetch('https://filmappserver.herokuapp.com/film/add',{
         method: 'POST',
         headers: {'Content-Type': 'application/json;charset=utf-8',
         "Authorization": `${localStorage.getItem('token')}`},
@@ -62,7 +62,7 @@ const addCommentActionCreator = (payload) => {
 }
 
 const fetchAddComment = (title,text) => async (dispatch,getState) => {
-    const responce = await fetch(`http://localhost:6970/film/${title}`,{
+    const responce = await fetch(`https://filmappserver.herokuapp.com/film/${title}`,{
         method: 'POST',
         headers: {'Content-Type': 'application/json;charset=utf-8',
         "Authorization": `${localStorage.getItem('token')}`},
@@ -82,7 +82,7 @@ const rateFilmActionCreator = (payload) => {
 }
 
 const fetchRateFilm = (title,value) => async (dispatch,getState) => {
-    const responce = await fetch(`http://localhost:6970/film/${title}/rating`,{
+    const responce = await fetch(`https://filmappserver.herokuapp.com/film/${title}/rating`,{
         method: 'PUT',
         headers: {'Content-Type': 'application/json;charset=utf-8',
         "Authorization": `${localStorage.getItem('token')}`},
@@ -101,7 +101,7 @@ const filmRatingUserActionCreator = (payload) => {
 }
 
 const fetchFilmRatingUser = (title) => async (dispatch,getState) => {
-    const responce = await fetch(`http://localhost:6970/film/${title}/rating`,{
+    const responce = await fetch(`https://filmappserver.herokuapp.com/film/${title}/rating`,{
         method: 'POST',
         headers: {'Content-Type': 'application/json;charset=utf-8',
         "Authorization": `${localStorage.getItem('token')}`},
