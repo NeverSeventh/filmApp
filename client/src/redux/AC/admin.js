@@ -1,5 +1,6 @@
 
 import { noErrorActionCreator } from "./error";
+import { redirectActionCreator } from "./redirect";
 
 
 
@@ -26,6 +27,7 @@ const fetchAddFilm = (title,description) => async(dispatch,getState) => {
        });
        if (responce.status ===200) {
         dispatch(noErrorActionCreator())
+        dispatch(redirectActionCreator(`/film/${title}`))
     }
 }
 

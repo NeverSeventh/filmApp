@@ -12,6 +12,9 @@ import EditFilm from "./components/Admin/EditFilm/EditFilm";
 import AddFilm from "./components/Admin/AddFilm/AddFilm";
 
 const App = () =>{
+
+
+
   return (
     <div className="App container">
       <Navbar/>

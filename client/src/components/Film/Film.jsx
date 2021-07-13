@@ -15,6 +15,7 @@ const Film = () => {
     
     const currentFilm = useSelector(state=> state.currentFilm);
     const currentUser = useSelector(state=>state.currentUser);
+    const redirect = useSelector(state=>state.redirect);
     const {user} = currentUser;
     const history = useHistory();
     const {film} = currentFilm;
@@ -57,7 +58,7 @@ const Film = () => {
 
         dispatch(fetchAddToFavourites(film.title));
         
-        history.push('/user');
+        
         
     }
 
