@@ -1,5 +1,6 @@
 import { ADD_COMMENT, ADD_TO_FAVOURITES, ALL_FILMS,CURRENT_FILM, FILM_RATING_USER, RATE_FILM  } from "../types"
 import { noErrorActionCreator } from "./error";
+import { redirectActionCreator } from "./redirect";
 
 const allFilmsActionCreator = (payload) => {
     return {type:ALL_FILMS, payload:payload}
@@ -50,8 +51,10 @@ const fetchAddToFavourites = (filmTitle) => async(dispatch,getState) => {
 
        if(responce.status===200) {
        
-    const message = await responce.json();
-    dispatch(addToFavouritesActionCreator(message));
+            const message = await responce.json();
+            dispatch(addToFavouritesActionCreator(message));
+            dispatch(redirectActionCreator('/user'));
+
     }
 
 

@@ -16,7 +16,7 @@ const NO_ERROR = "NO_ERROR";
 const ADD_FILM = "ADD_FILM";
 const EDIT_FILM = "EDIT_FILM";
 const DELETE_FILM = "DELETE_FILM";
-
+const REDIRECT = 'REDIRECT';
 
 export {
     LOGIN,
@@ -36,5 +36,6 @@ export {
     IS_ADMIN,
     TOKEN,
     ERROR,
-    NO_ERROR
+    NO_ERROR,
+    REDIRECT
 }

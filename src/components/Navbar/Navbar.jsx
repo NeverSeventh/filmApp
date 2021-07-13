@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { NavLink } from "react-router-dom";
+import { NavLink, useHistory } from "react-router-dom";
+import { redirectActionCreator } from "../../redux/AC/redirect";
 import { fetchCurrentUser } from "../../redux/AC/users";
 import Logout from "../Logout/Logout";
 import "./navbar.scss"
@@ -9,15 +10,20 @@ import "./navbar.scss"
 
 const Navbar = () => {
     const userid = useSelector(state=>state.currentUser.user?.id);
-    
+    const redirect = useSelector(state=>state.redirect);
     const role = useSelector(state=>state.currentUser.user?.role);
-
+    const history = useHistory();
     const dispatch = useDispatch();
 
     let isAdmin;
 
     if (role === 'admin') {
         isAdmin=true;
+    }
+
+    if (redirect) {
+        history.push(redirect);
+        dispatch(redirectActionCreator(''));
     }
     
     useEffect(()=> {

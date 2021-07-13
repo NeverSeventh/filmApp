@@ -57,7 +57,7 @@ const Film = () => {
 
         dispatch(fetchAddToFavourites(film.title));
         
-        history.push('/user');
+        
         
     }
 

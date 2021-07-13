@@ -1,5 +1,6 @@
 
 import { noErrorActionCreator } from "./error";
+import { redirectActionCreator } from "./redirect";
 
 
 
@@ -25,7 +26,8 @@ const fetchAddFilm = (title,description) => async(dispatch,getState) => {
         body:JSON.stringify({title,description})
        });
        if (responce.status ===200) {
-        dispatch(noErrorActionCreator())
+        dispatch(noErrorActionCreator());
+        dispatch(redirectActionCreator(`/film/${title}`))
     }
 }
 
@@ -37,7 +39,8 @@ const fetchDeleteFilm = (id) => async(dispatch,getState) => {
         body:JSON.stringify({id})
     });
     if (responce.status ===200) {
-        dispatch(noErrorActionCreator())
+        dispatch(noErrorActionCreator());
+        dispatch(redirectActionCreator(`/film`))
     }
 }
 

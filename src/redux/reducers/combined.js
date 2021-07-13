@@ -1,5 +1,5 @@
 
-import { ALL_FILMS, LOGIN, LOGOUT, SIGNUP,CURRENT_FILM, CURRENT_USER, ADD_TO_FAVOURITES, ADD_COMMENT, RATE_FILM, FILM_RATING_USER,IS_ADMIN,ERROR,TOKEN, EDIT_FILM,NO_ERROR } from "../types";
+import { ALL_FILMS, LOGIN, LOGOUT, SIGNUP,CURRENT_FILM, CURRENT_USER, ADD_TO_FAVOURITES, ADD_COMMENT, RATE_FILM, FILM_RATING_USER,IS_ADMIN,ERROR,TOKEN, EDIT_FILM,NO_ERROR, REDIRECT } from "../types";
 
 const reducer = (state=[],action) => {
    
@@ -78,6 +78,8 @@ const reducer = (state=[],action) => {
         case EDIT_FILM:
             return state;
 
+
+        //error reducer
         case ERROR:
             return {
                 ...state,
@@ -87,6 +89,13 @@ const reducer = (state=[],action) => {
             return {
                 ...state,
                 errorMesg:''
+            }
+
+        //redirect reducer 
+        case REDIRECT:
+            return {
+                ...state,
+                redirect:action.payload
             }
 
         default:

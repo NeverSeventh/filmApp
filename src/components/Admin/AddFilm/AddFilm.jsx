@@ -10,10 +10,11 @@ const AddFilm = () => {
     const dispacth = useDispatch();
     const history = useHistory();
 
-    const addFilmHandler = (e) => {
+    const addFilmHandler = async (e) => {
         e.preventDefault();
         const {title,desc} = e.target;
-        dispacth(fetchAddFilm(title.value,desc.value))
+        dispacth(fetchAddFilm(title.value,desc.value));
+        
         history.push(`/film/${title.value}`)
     }
 

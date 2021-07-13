@@ -8,7 +8,7 @@ const initialState = {
     userid:undefined,
     currentRating:0,
     errorMesg:'',
-    isAdmin:false
+    redirect:''
 }
 
 export default initialState;
