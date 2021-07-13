@@ -8,7 +8,7 @@ import { REDIRECT } from "../types"
 
 
 const redirectActionCreator = (payload) => {
-    return {action:REDIRECT,payload:payload}
+    return {type:REDIRECT,payload:payload}
 }
 
 
